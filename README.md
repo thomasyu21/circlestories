@@ -1,4 +1,4 @@
-# Project Name by CircleTable
+# CircleStories by CircleTable
 Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo<br>
 SoftDev<br>
 P00<br>
