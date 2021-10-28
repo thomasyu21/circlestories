@@ -9,3 +9,7 @@ level that runs the app (circlestories.py).
 
 devenM - 2021-10-27 21:57
 Added wiki design doc for team Sports! which was split up in regrouping. (design_wiki1.pdf)
+
+devenM - 2021-10-28 14:00
+Added database building python. Configured for user and story databases. Waiting on 
+routes.py so that information can be processed into database. (db_maker.py)
