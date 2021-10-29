@@ -20,12 +20,12 @@ $ source env/bin/activate
 
 3. Install project dependencies.
 ```
-$ pip3 install -r requirements.txt
+$ (env) pip3 install -r requirements.txt
 ```
 
 4. Run the app.
 ```
-$ python3 circlestories.py
+$ (env) python3 circlestories.py
 ```
 
 You can access our web app by going to http://localhost:5000/.
