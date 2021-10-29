@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!-- 
+    CircleTable - Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven M
+    SoftDev
+    P00: CircleStories
+    2021-10-29
+    Login page 
+ -->
+
+ <html>
+    <head>
+        <title>Welcome, {{ username }}!</title>
+    </head>
+    <body>
+        <h4>Hello, {{ username }}!</h4>
+        <h1>
+            Huzzah! You have successfully logged in. Congratulations,
+            {{ username }}!
+        </h1>
+        <a href='{{ url_for("logout") }}'>Logout</a>
+    </body>
+ </html>
+ 
