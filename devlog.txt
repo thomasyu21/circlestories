@@ -7,9 +7,16 @@ christopherL -- 2021-10-27 09:02
 Added basic file structure for app routes; added a wrapper file at the root
 level that runs the app (circlestories.py).
 
-devenM - 2021-10-27 21:57
-Added wiki design doc for team Sports! which was split up in regrouping. (design_wiki1.pdf)
+devenM -- 2021-10-27 21:57
+Added wiki design doc for team Sports! which was split up in regrouping.
+(design_wiki1.pdf)
 
-devenM - 2021-10-28 14:00
-Added database building python. Configured for user and story databases. Waiting on 
-routes.py so that information can be processed into database. (db_maker.py)
+devenM -- 2021-10-28 14:00
+Added database building python. Configured for user and story databases.
+Waiting on routes.py so that information can be processed into database.
+(db_maker.py)
+
+christopherL -- 2021-10-28 22:54
+Basic refactoring of existing code for style and general consistency. Added a
+general guidelines text file that will be added upon in the future for
+reference.
