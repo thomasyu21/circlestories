@@ -5,7 +5,6 @@
 
 
 import sqlite3  # Enable control of an sqlite database
-
 import routes  # Information from routes will be recorded in database
 
 
@@ -18,9 +17,10 @@ def main():
     # Create tables if exists
     c.execute("CREATE TABLE IF EXISTS users(username TEXT, email TEXT, password TEXT);")
     c.execute(
-        "CREATE TABLE IF EXISTSstories(username TEXT, first_block_id INTEGER, last_block_id INTEGER);"
+        "CREATE TABLE IF EXISTS stories(username TEXT, first_block_id INTEGER, last_block_id INTEGER);"
     )
 
+#----------------------------------------------------
     # Test Method
     for row in c.execute("SELECT * FROM users"):
         print(row)
