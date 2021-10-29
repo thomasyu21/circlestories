@@ -14,4 +14,5 @@ app.secret_key = urandom(32)
 
 from app import routes
 
+app.debug = True
 app.run()

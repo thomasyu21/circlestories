@@ -28,5 +28,8 @@ per our new app design (unique ids for everything). Added a database diagram.
 christopherL -- 2021-10-29 08:14
 Added requirements.txt for dependencies and updated README with launch codes.
 
-naominaranjo -- 2021-10-29 08:23
-Added html templates for login and logged in homepage.
+naomiN -- 2021-10-29 08:23
+Added HTML templates for login and logged in homepage.
+
+christopherL -- 2021-10-29 08:27
+Added routing for existing HTML templates.
