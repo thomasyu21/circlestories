@@ -24,3 +24,6 @@ reference.
 christopherL -- 2021-10-28 23:45
 Updated design doc: added more fields to the database organization section as
 per our new app design (unique ids for everything). Added a database diagram.
+
+christopherL -- 2021-10-29 08:14
+Added requirements.txt for dependencies and updated README with launch codes.
