@@ -33,3 +33,10 @@ Added HTML templates for login and logged in homepage.
 
 christopherL -- 2021-10-29 08:27
 Added routing for existing HTML templates.
+
+yusufE -- 2021-10-31 06:41
+Added all of my work from 2021-10-27 until now, including:
+- StoryDB class to interface with a given SQLite database
+- Story DAO that represents a particular row of the stories table
+- Tests to ensure that creating new stories & adding blocks works
+A lot of the current design is still subject to change.
