@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS blocks (
 HEX_ID_LEN = 16
 MIN_ID = -(2 ** 63)
 
-
+# Storing in database as an integer
 def numIdToHex(numId):
     return hex(numId - MIN_ID)[2:].zfill(HEX_ID_LEN)
 
