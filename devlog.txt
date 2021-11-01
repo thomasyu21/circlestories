@@ -40,3 +40,7 @@ Added all of my work from 2021-10-27 until now, including:
 - Story DAO that represents a particular row of the stories table
 - Tests to ensure that creating new stories & adding blocks works
 A lot of the current design is still subject to change.
+
+devenM -- 2021-11-01 08:22
+Created login and register html pages. Still tweaking with routing and connecting to db. 
+(register.html and login.html)
