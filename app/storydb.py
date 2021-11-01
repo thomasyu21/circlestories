@@ -26,16 +26,16 @@ class StoryDB:
         def __init__(self, db_obj, keys, values):
             self.db_obj = db_obj
             self.keys = keys
-            self.values = values
+            self.values = list(values)
             # Allow for access of columns through dot syntax:
             for k, v in zip(keys, values):
                 setattr(self, k, v)
 
         def update_with(self, cur, values):
-            print(cur, cur.description, values)
             for k, v in zip(cur.description, values):
                 k = k[0]
                 setattr(self, k, v)
+                self.values[self.keys.index(k)] = v
 
         @staticmethod
         def init_wrapper(db_obj):
