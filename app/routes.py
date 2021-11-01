@@ -5,7 +5,7 @@
 
 from flask import render_template, redirect, url_for, session
 import sqlite3
-from app import app
+from app import app, db_maker
 
 
 @app.route("/")
@@ -25,6 +25,7 @@ def add_to_db():
     DB_FILE="discobandit.db"
 
     db = sqlite3.connect(DB_FILE) # open if file exists, otherwise create
-    c = db.cursor()  
+    c = db.cursor() 
+     
     return 1
 

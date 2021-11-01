@@ -16,9 +16,6 @@ def main():
 
     # Create tables if exists
     c.execute("CREATE TABLE IF EXISTS users(username TEXT, email TEXT, password TEXT);")
-    c.execute(
-        "CREATE TABLE IF EXISTS stories(username TEXT, first_block_id INTEGER, last_block_id INTEGER);"
-    )
 
 #----------------------------------------------------
     # Test Method
