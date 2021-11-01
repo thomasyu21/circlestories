@@ -19,7 +19,7 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    return "Registration page"
+    return render_template("register.html")
 
 def add_to_db():
     DB_FILE="discobandit.db"
