@@ -44,3 +44,8 @@ A lot of the current design is still subject to change.
 devenM -- 2021-11-01 08:22
 Created login and register html pages. Still tweaking with routing and connecting to db. 
 (register.html and login.html)
+
+yusufE -- 2021-11-01 08:39
+Fixed story & block random ids by storing as hex
+Fixed updating values for a Story DAO
+Started append.html template for adding to stories
