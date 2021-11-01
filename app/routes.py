@@ -5,7 +5,7 @@
 
 from flask import render_template, redirect, url_for, session
 import sqlite3
-from app import app, db_maker
+from app import app
 
 
 @app.route("/")
@@ -26,6 +26,6 @@ def add_to_db():
 
     db = sqlite3.connect(DB_FILE) # open if file exists, otherwise create
     c = db.cursor() 
-     
+
     return 1
 
