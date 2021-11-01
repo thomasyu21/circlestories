@@ -2,7 +2,7 @@ import sqlite3
 
 _setup_commands = """
 CREATE TABLE IF NOT EXISTS stories (
-    story_id            INTEGER NOT NULL UNIQUE PRIMARY KEY DEFAULT (random()),
+    story_id            TEXT PRIMARY KEY DEFAULT (hex(randomblob(8))),
     creation_timestamp  DATE DEFAULT CURRENT_TIMESTAMP,
     creator_id          INTEGER,
     num_blocks          INTEGER DEFAULT 0,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS stories (
 );
 
 CREATE TABLE IF NOT EXISTS blocks (
-    block_id            INTEGER NOT NULL UNIQUE PRIMARY KEY DEFAULT (random()),
+    block_id            TEXT PRIMARY KEY DEFAULT (hex(randomblob(8))),
     creation_timestamp  DATE DEFAULT CURRENT_TIMESTAMP,
     story_id            INTEGER,
     author_id           INTEGER,
@@ -19,17 +19,6 @@ CREATE TABLE IF NOT EXISTS blocks (
     block_text          TEXT
 );
 """
-
-HEX_ID_LEN = 16
-MIN_ID = -(2 ** 63)
-
-
-def numIdToHex(numId):
-    return hex(numId - MIN_ID)[2:].zfill(HEX_ID_LEN)
-
-
-def hexIdToNum(hexId):
-    return int(hexId, 16) + MIN_ID
 
 
 class StoryDB:
