@@ -49,3 +49,8 @@ yusufE -- 2021-11-01 08:39
 Fixed story & block random ids by storing as hex
 Fixed updating values for a Story DAO
 Started append.html template for adding to stories
+
+devenM -- 2021-11-01 13:44
+Fixed login and register pages to display username, password, and email prompts. 
+Need to import session to track user cookies
+(register.html and login.html)
