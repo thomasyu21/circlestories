@@ -17,7 +17,7 @@ def main():
     # Create tables if exists
     c.execute("CREATE TABLE IF EXISTS users(username TEXT, email TEXT, password TEXT);")
 
-#----------------------------------------------------
+    # ----------------------------------------------------
     # Test Method
     for row in c.execute("SELECT * FROM users"):
         print(row)
