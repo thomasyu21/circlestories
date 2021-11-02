@@ -54,3 +54,13 @@ devenM -- 2021-11-01 13:44
 Fixed login and register pages to display username, password, and email prompts. 
 Need to import session to track user cookies
 (register.html and login.html)
+
+christopherL -- 2021-11-02 14:14
+Connected all of the existing authentication code and set up authentication
+routes. Previous db_maker.py is now incorporated into auth.py. We can now
+create a new user, log in, stay logged in (with session) and have a different
+homepage based on whether the user is logged in or not. Basic validation for
+the registration form was implemented (no empty entries, email must be an email,
+password and check password must match, username/email must be unique). We
+likely should add (1) message flashing to let the user know that registration
+worked and (2) PASSWORD HASHING because it's very insecure right now.
