@@ -1,38 +1,28 @@
-<!DOCTYPE html>
-<!-- 
-    CircleTable — Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
+<!--
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
     SoftDev
-    P00
-    2021-10-29
+    P00: CircleStories
 
+    Login Page
+-->
 
+<!DOCTYPE html>
 <html>
+    <head>
+        <title>Log In</title>
+    </head>
+    <body>
+        <h1>Log In</h1>
+        <h2>Please enter your username and password below to proceed.</h2>
+        <form action="/login", method="POST">
+            <p>Username: <input type="text" name="username"></p>
+            <p>Password: <input type="password" name="password"></p>
+            {% if error %}
+            <p style="color:red">{{ error }}</p>
+            {% endif %}
+            <input type="submit", name="sub" value="Log In">
+        </form>
 
-  <head>
-    <title> LOGIN PAGE </title>
-  </head>
-
-  <body>
-    <h4>
-        CircleTable — Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo <br>
-        SoftDev <br>
-        P00 <br>
-        2021-10-29 <br>
-      </h4>
-    <h1>
-      Welcome to CircleTable Stories!
-    </h1>
-
-    <h3>
-      Enter your username below to proceed.
-    <form action="/auth"> 
-      <input type="text" name="username">
-      Enter your password below to proceed.
-    </h3>
-      <input type="text" name="password">
-      <input type="submit" name="sub1">
-    </form>
-    <br>
-  </body>
-
+        <p>New user? <a href="{{ url_for('register') }}">Register</a> here.</p>
+    </body>
 </html>

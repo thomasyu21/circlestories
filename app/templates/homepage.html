@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<!-- 
-    CircleTable - Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven M
+<!--
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
     SoftDev
     P00: CircleStories
-    2021-10-29
-    Login page 
- -->
 
- <html>
+    Registered User Homepage
+-->
+
+<!DOCTYPE html>
+<html>
     <head>
-        <title>Welcome, {{ username }}!</title>
+        <title>Home</title>
     </head>
     <body>
-        <h4>Hello, {{ username }}!</h4>
-        <h1>
-            Huzzah! You have successfully logged in. Congratulations,
-            {{ username }}!
-        </h1>
-        <a href='{{ url_for("logout") }}'>Logout</a>
+        <h1>Welcome, {{ username }}!</h1>
+        <h2>You are successfully logged in.</h2>
+        <p><a href="{{ url_for('logout') }}">Logout</a></p>
     </body>
- </html>
- 
+</html>

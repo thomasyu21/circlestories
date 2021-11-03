@@ -49,3 +49,24 @@ yusufE -- 2021-11-01 08:39
 Fixed story & block random ids by storing as hex
 Fixed updating values for a Story DAO
 Started append.html template for adding to stories
+
+devenM -- 2021-11-01 13:44
+Fixed login and register pages to display username, password, and email prompts. 
+Need to import session to track user cookies
+(register.html and login.html)
+
+christopherL -- 2021-11-02 14:14
+Connected all of the existing authentication code and set up authentication
+routes. Previous db_maker.py is now incorporated into auth.py. We can now
+create a new user, log in, stay logged in (with session) and have a different
+homepage based on whether the user is logged in or not. Basic validation for
+the registration form was implemented (no empty entries, email must be an email,
+password and check password must match, username/email must be unique). We
+likely should add (1) message flashing to let the user know that registration
+worked and (2) PASSWORD HASHING because it's very insecure right now.
+
+christopherL -- 2021-11-02 20:30
+Added some basic QA and linting. I chose to use pylint for now, though it's a
+little oversensitive so we'll see. Added a .pylintrc and updated
+requirements.txt accordingly. In response to some of the linting errors, I did
+some basic refactoring as well.
