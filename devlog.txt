@@ -70,3 +70,6 @@ Added some basic QA and linting. I chose to use pylint for now, though it's a
 little oversensitive so we'll see. Added a .pylintrc and updated
 requirements.txt accordingly. In response to some of the linting errors, I did
 some basic refactoring as well.
+
+christopherL -- 2021-11-03 08:26
+Added password hashing (SHA512). For now, we don't have salting or peppering.

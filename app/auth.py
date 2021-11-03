@@ -8,13 +8,19 @@ Handles all of the login/registration functionality for CircleStories
 including input validation.
 """
 
+import hashlib
 import re
 import sqlite3
 
 DB_FILE = "circlestories.db"
 
 
-def validate_user(
+def hash_password(password: str) -> str:
+    """Hashes the provided password using SHA512."""
+
+    return hashlib.sha512(password.encode()).hexdigest()
+
+def validate_registration(
     username: str, email: str, password: str, password_check: str
 ) -> list:
     """Validates input for new user creation."""
@@ -73,11 +79,12 @@ def create_user(username: str, email: str, password: str, password_check: str) -
     """
     )
 
-    errors = validate_user(username, email, password, password_check)
+    errors = validate_registration(username, email, password, password_check)
     if not errors:
+        password_hash = hash_password(password)
         c.execute(
             "INSERT INTO users(username, email, password) VALUES (?, ?, ?)",
-            (username, email, password),
+            (username, email, password_hash),
         )
 
     db.commit()
@@ -100,7 +107,7 @@ def authenticate_user(username: str, password: str) -> bool:
     user_pw = c.execute(
         "SELECT password FROM users WHERE username=:username", {"username": username}
     ).fetchone()
-    if user_pw is not None and user_pw[0] == password:
+    if user_pw is not None and user_pw[0] == hash_password(password):
         return True
 
     return False
