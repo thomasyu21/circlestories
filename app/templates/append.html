@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!-- 
+    CircleTable - Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven M
+    SoftDev
+    P00: CircleStories
+    2021-11-12
+    Login page 
+ -->
+
+<html>
+    <head>
+        <title>Adding to Story</title>
+    </head>
+    <body>
+        <p>{{ last_block }}</p>
+        <form action="submit_block" method="post">
+            ## This is under the assumption that the id of the story being edited is stored within the session
+            ## It can be alternatively be included in the form, but that would allow "hackers" to add to any story easily
+            ## The user id is not included in the form for a similar reason: it would allow users to submit under another user's id
+            <label for="text">Your continuation:</label>
+            <textarea name="text" placeholder="Continue the story here..."></textarea>
+            <input type="submit">
+        </form>
+    </body>
+</html>
