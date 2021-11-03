@@ -13,13 +13,9 @@
     </head>
     <body>
         <h2>Viewing Created Stories</h2>
-        <p>{{ last_block }}</p> 
+        <p>{{ entire_story }}</p> 
         <br>
-        <form action="submit_block" method="post">
-            <label for="text">Your continuation:</label>
-            <textarea name="text" placeholder="Continue the story here..."></textarea>
-            <br>
-            <input type="submit">
-        </form>
+        <p><a href="{{ url_for('logout') }}">Logout</a></p>
+        <p><a href="{{ url_for('add') }}">Add to Story</a></p>
     </body>
 </html>
