@@ -31,7 +31,13 @@ CREATE TABLE IF NOT EXISTS blocks (
 
 
 class StoryDB:
+    """An instance of this class would be used to interface with the database.
+    Only one should be created per app instance."""
+
     class Story:
+        """This is a DAO (Data Access Object, i.e. a representation of data in the database).
+        You can get these through `StoryDB.get_story(story_id)`"""
+
         def __init__(self, db_obj, keys, values):
             self.db_obj = db_obj
             self.keys = keys
@@ -41,6 +47,7 @@ class StoryDB:
                 setattr(self, k, v)
 
         def update_with(self, cur, values):
+            """Used as update_cur.row_factory."""
             for k, v in zip(cur.description, values):
                 k = k[0]
                 setattr(self, k, v)
@@ -49,7 +56,7 @@ class StoryDB:
         @staticmethod
         def init_wrapper(db_obj):
             """Returns a function that creates a Story from a cursor and tuple of keys,
-            but with `db_obj` already set to the given object. Used as Cursor.row_factory."""
+            but with `db_obj` already set to the given object. Used for story_cur.row_factory."""
 
             def factory(cur, values):
                 return StoryDB.Story(
@@ -71,17 +78,19 @@ class StoryDB:
                 "INSERT INTO blocks(story_id, author_id, position, block_text) VALUES (?, ?, ?, ?)",
                 (self.story_id, author_id, self.num_blocks, block_text),
             )
+            self.num_blocks += 1
             self.db_obj.cur.execute(
                 "SELECT block_id FROM blocks WHERE rowid=last_insert_rowid() LIMIT 1"
             )
-            last_block_id = self.db_obj.cur.fetchone()[0]
+            self.last_block_id = self.db_obj.cur.fetchone()[0]
             self.db_obj.update_cur.execute(
                 "UPDATE stories SET num_blocks=?, last_block_id=? WHERE story_id=?",
-                (self.num_blocks + 1, last_block_id, self.story_id),
+                (self.num_blocks, self.last_block_id, self.story_id),
             )
-            self.update()
+            # self.update()
 
         def update(self):
+            """Requests data from the database to update"""
             self.db_obj.update_cur.row_factory = self.update_with
             self.db_obj.update_cur.execute(
                 "SELECT * FROM stories WHERE story_id=? LIMIT 1", (self.story_id,)
