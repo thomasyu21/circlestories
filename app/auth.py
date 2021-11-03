@@ -20,6 +20,7 @@ def hash_password(password: str) -> str:
 
     return hashlib.sha512(password.encode()).hexdigest()
 
+
 def validate_registration(
     username: str, email: str, password: str, password_check: str
 ) -> list:
