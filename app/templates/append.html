@@ -12,15 +12,14 @@
         <title>Adding to Story</title>
     </head>
     <body>
-        <p>{{ last_block }}</p> 
-        <br>
         <h2>Add a new scene to your story</h2>
-        <br>
+        <p>{{ last_block }}</p> 
         * Remember you can only add scenes to the end of the story!
         <br>
         <form action="submit_block" method="post">
             <label for="text">Your continuation:</label>
             <textarea name="text" placeholder="Continue the story here..."></textarea>
+            <br>
             <input type="submit">
         </form>
     </body>
