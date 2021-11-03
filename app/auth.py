@@ -112,3 +112,19 @@ def authenticate_user(username: str, password: str) -> bool:
         return True
 
     return False
+
+
+def get_user_id(username: str) -> str:
+    """Returns the user ID associated with the given username, None if user
+    doesn't exist."""
+
+    db = sqlite3.connect(DB_FILE)
+    c = db.cursor()
+
+    user_id = c.execute(
+        "SELECT user_id FROM users WHERE username=:username", {"username", username}
+    ).fetchone()
+
+    if user_id is not None:
+        return user_id[0]
+    return None

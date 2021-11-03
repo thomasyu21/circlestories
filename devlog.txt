@@ -72,6 +72,9 @@ requirements.txt accordingly. In response to some of the linting errors, I did
 some basic refactoring as well.
 
 devenM -- 2021-11-03 08:34
-Added append and view front end pages. Routed append to main site. Allowing user to add
-to most recent block and view the entire creation on another page. Using story database 
-block ID's to link entire stories. 
+Added append and view front end pages. Routed append to main site. Allowing
+user to add to most recent block and view the entire creation on another page.
+Using story database  block ID's to link entire stories. 
+
+christopherL -- 2021-11-03 09:29
+Added a method to get a user ID from a username.
