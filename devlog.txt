@@ -71,5 +71,7 @@ little oversensitive so we'll see. Added a .pylintrc and updated
 requirements.txt accordingly. In response to some of the linting errors, I did
 some basic refactoring as well.
 
-christopherL -- 2021-11-03 08:26
-Added password hashing (SHA512). For now, we don't have salting or peppering.
+devenM -- 2021-11-03 08:34
+Added append and view front end pages. Routed append to main site. Allowing user to add
+to most recent block and view the entire creation on another page. Using story database 
+block ID's to link entire stories. 
