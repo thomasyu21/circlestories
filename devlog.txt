@@ -78,3 +78,8 @@ Using story database  block ID's to link entire stories.
 
 christopherL -- 2021-11-03 09:29
 Added a method to get a user ID from a username.
+
+devenM -- 2021-11-03 13:13
+Edited routes to include append and view html files. Added view html files to view
+completed stories and linked homepages and external sites to travel website. Need 
+to link storydb and routes py to keep track of last_block and stories. 
