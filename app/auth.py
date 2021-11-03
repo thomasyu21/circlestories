@@ -2,6 +2,12 @@
 # SoftDev
 # P00: CircleStories
 
+"""Authentication
+
+Handles all of the login/registration functionality for CircleStories
+including input validation.
+"""
+
 import re
 import sqlite3
 
@@ -91,10 +97,10 @@ def authenticate_user(username: str, password: str) -> bool:
     ).fetchone():
         return False
 
-    pw = c.execute(
+    user_pw = c.execute(
         "SELECT password FROM users WHERE username=:username", {"username": username}
     ).fetchone()
-    if pw is not None and pw[0] == password:
+    if user_pw is not None and user_pw[0] == password:
         return True
 
     return False

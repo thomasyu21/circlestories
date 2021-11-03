@@ -1,6 +1,15 @@
+# CircleTable — Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
+# SoftDev
+# P00: CircleStories
+
+"""Story Database Handler
+
+Handles everything related to story/block database management.
+"""
+
 import sqlite3
 
-_setup_commands = """
+SETUP_COMMANDS = """
 CREATE TABLE IF NOT EXISTS stories (
     story_id            TEXT PRIMARY KEY DEFAULT (hex(randomblob(8))),
     creation_timestamp  DATE DEFAULT CURRENT_TIMESTAMP,
@@ -96,7 +105,7 @@ class StoryDB:
     def setup(self):
         """Runs database setup commands (creating tables).
         Should not fail if the database was already set up."""
-        self.story_cur.executescript(_setup_commands)
+        self.story_cur.executescript(SETUP_COMMANDS)
 
     def add_story(self, creator_id, title):
         """Adds a story to the database and returns its story_id."""
@@ -158,11 +167,12 @@ By the time I arrived at school, there was only 10 minutes left in 2nd period.""
 
     storyDAO.add_block(
         26_21_19_21_06,
-        """I didn't think to go to my 2nd period class, Weighttraining, since I wouldn't be able to change.
-But I realized later that I should have gone to tell him what had happened.
-Instead I stayed near the 2nd floor atrium and chatted with a friend until 3rd period.
-We got cool new dry-erase whiteboard desks in that class. This story is going off topic.
-But they are pretty cool desks.""",
+        """I didn't think to go to my 2nd period class, Weighttraining, since I
+wouldn't be able to change. But I realized later that I should have gone to
+tell him what had happened. Instead I stayed near the 2nd floor atrium and
+chatted with a friend until 3rd period. We got cool new dry-erase whiteboard
+desks in that class. This story is going off topic. But they are pretty cool
+desks.""",
     )
 
     print()
