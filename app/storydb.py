@@ -88,15 +88,15 @@ class StoryDB:
                 (self.num_blocks, self.last_block_id, self.story_id),
             )
             # self.update()
-        
+
         def last_block(self):
-            '''Returns the text of the last block'''
+            """Returns the text of the last block"""
             self.db_obj.block_cur.execute(
                 "SELECT block_text FROM blocks WHERE story_id=? AND position=?",
-                (self.story_id, self.num_blocks-1)
+                (self.story_id, self.num_blocks - 1),
             )
             return self.db_obj.block_cur.fetchone()[0]
-        
+
         def update(self):
             """Requests data from the database to update"""
             self.db_obj.update_cur.row_factory = self.update_with
@@ -196,7 +196,7 @@ desks.""",
     print(storyDAO)
     print(storyDAO.full_text())
     print()
-    
+
     print(storyDAO.last_block())
-    
+
     print(db.get_story("not a real id"))
