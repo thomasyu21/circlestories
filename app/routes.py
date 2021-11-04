@@ -17,7 +17,8 @@ from app.auth import authenticate_user, create_user
 
 DB_FILE = "circlestories.db"
 
-sdb = storydb.StoryDB(DB_FILE)
+STORY_DB = storydb.StoryDB(DB_FILE)
+
 
 @app.route("/")
 @app.route("/index")
@@ -80,6 +81,7 @@ def add():
     """Displays adding to story page"""
     return render_template("append.html")
 
+
 @app.route("/view")
 def view():
     """Displays adding to story page"""
@@ -99,17 +101,18 @@ def logout():
         del session["username"]
     return redirect(url_for("index"))
 
+
 @app.route("/story/<story_id>")
 def get_story(story_id):
     if "username" not in session:
         # "You need to login!"
         return ""
     else:
-        user_id = 0 # TODO: get from auth.py
-        story_creator = sdb.get_story(story_id).creator_id
+        user_id = 0  # TODO: get from auth.py
+        story_creator = STORY_DB.get_story(story_id).creator_id
         if story_creator != user_id:
             # "You do not have access to this story!"
             # or "Story not found" if we don't want to know this story exists
             return ""
-        text = sdb.get_story(story_id).full_text()
-        return text # TODO: render from template
+        text = STORY_DB.get_story(story_id).full_text()
+        return text  # TODO: render from template
