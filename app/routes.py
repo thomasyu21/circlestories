@@ -85,6 +85,11 @@ def view():
     """Displays adding to story page"""
     return render_template("view.html")
 
+@app.route("/new")
+def new():
+    """Displays creating a new story page"""
+    return render_template("new.html")
+
 
 @app.route("/logout")
 def logout():
