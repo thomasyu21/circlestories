@@ -1,2 +1,5 @@
+[MASTER]
+unsafe-load-any-extension=y
+
 [BASIC]
 good-names=i,j,k,ex,Run,_,db,c,v
