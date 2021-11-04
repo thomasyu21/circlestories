@@ -93,3 +93,7 @@ Added html template for creating new stories and edited routes to included new s
 
 yusufE -- 2021-11-04 08:38
 Added more StoryDB methods for the relationship between users and stories. 
+
+devenM -- 2021-11-04 08:40
+Tested all pages, note that submission on append.html must be addressed as well as display
+of username when logged in. Changed routes to work with form acceptance with authentication.
