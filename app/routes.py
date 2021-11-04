@@ -12,10 +12,12 @@ import sqlite3
 from flask import render_template, redirect, request, url_for, session
 
 from app import app
+from app import storydb
 from app.auth import authenticate_user, create_user
 
-DB_FILE = "discobandit.db"
+DB_FILE = "circlestories.db"
 
+sdb = storydb.StoryDB(DB_FILE)
 
 @app.route("/")
 @app.route("/index")
@@ -85,9 +87,17 @@ def logout():
         del session["username"]
     return redirect(url_for("index"))
 
-
-def add_to_db():
-    db = sqlite3.connect(DB_FILE)  # open if file exists, otherwise create
-    c = db.cursor()
-
-    return 1
+@app.route("/story/<story_id>")
+def get_story(story_id):
+    if "username" not in session:
+        # "You need to login!"
+        return ""
+    else:
+        user_id = 0 # TODO: get from auth.py
+        story_creator = sdb.get_story(story_id).creator_id
+        if story_creator != user_id:
+            # "You do not have access to this story!"
+            # or "Story not found" if we don't want to know this story exists
+            return ""
+        text = sdb.get_story(story_id).full_text()
+        return text # TODO: render from template
