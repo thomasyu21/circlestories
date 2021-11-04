@@ -76,17 +76,35 @@ def register():
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
 
+@app.route("/create")
+def create():
+    """Allows user to create to a new story"""
+    # GET request: display the form
+    if request.method == "GET":
+        return render_template("create.html")
 
-@app.route("/append")
-def add():
-    """Displays adding to story page"""
-    return render_template("append.html")
+    # POST request: handle the form response and redirect
+    created_story = request.form.get("new", default="")
+
+    # Maybe put a flash message here to confirm everything works
+    return redirect(url_for("get_story"))
+
+# @app.route("/append")
+# def add():
+#     """Displays adding to story page"""
+
+#     return render_template("append.html")
 
 
-@app.route("/view")
-def view():
-    """Displays adding to story page"""
-    return render_template("view.html")
+# @app.route("/view")
+# def view():
+#     """Displays adding to story page"""
+#     return render_template("view.html")
+
+@app.route("/new")
+def new():
+    """Displays creating a new story page"""
+    return render_template("new.html")
 
 
 @app.route("/logout")

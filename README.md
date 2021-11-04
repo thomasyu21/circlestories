@@ -1,5 +1,8 @@
 # CircleStories by CircleTable
-Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo<br>
+Christopher Liu: Project Manager, Auth, Component Integration<br>
+Yusuf Elsharawy: Story Database Management, Routing<br>
+Deven Maheshwari: Frontend Design, User Database Management, QA<br>
+Naomi Naranjo: Frontend Design, Project Design<br>
 
 ## App Description
 Something goes here
