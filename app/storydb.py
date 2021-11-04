@@ -189,4 +189,4 @@ desks.""",
     print(storyDAO.full_text())
     print()
     
-    print(db.)
+    # print(db.get)
