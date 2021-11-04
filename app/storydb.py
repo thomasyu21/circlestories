@@ -84,19 +84,19 @@ class StoryDB:
             )
             self.last_block_id = self.db_obj.cur.fetchone()[0]
             self.db_obj.update_cur.execute(
-                "UPDATE stories SET num_blocks=?, last_block_id=? WHERE story_id=?",
+                "UPDATE stories SET num_blocks=?, last_block_id=? WHERE story_id=? LIMIT 1",
                 (self.num_blocks, self.last_block_id, self.story_id),
             )
             # self.update()
-        
+
         def last_block(self):
-            '''Returns the text of the last block'''
+            """Returns the text of the last block"""
             self.db_obj.block_cur.execute(
-                "SELECT block_text FROM blocks WHERE story_id=? AND position=?",
-                (self.story_id, self.num_blocks-1)
+                "SELECT block_text FROM blocks WHERE story_id=? AND position=? LIMIT 1",
+                (self.story_id, self.num_blocks - 1),
             )
             return self.db_obj.block_cur.fetchone()[0]
-        
+
         def update(self):
             """Requests data from the database to update"""
             self.db_obj.update_cur.row_factory = self.update_with
@@ -141,6 +141,40 @@ class StoryDB:
             "SELECT * FROM stories WHERE story_id=? LIMIT 1", (story_id,)
         )
         return self.story_cur.fetchone()
+
+    def is_contributor(self, user_id, story_id):
+        """Returns whether this user contributed to this story.
+        The creator counts as a contributor."""
+        self.cur.execute(
+            "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
+            (user_id, story_id),
+        )
+        return bool(self.cur.fetchone())
+
+    def is_creator(self, user_id, story_id):
+        """Returns whether this user contributed to this story."""
+        self.cur.execute(
+            "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
+            (user_id, story_id),
+        )
+        return bool(self.cur.fetchone())
+
+    def get_created_stories(self, user_id):
+        """Returns list of story ids created by this user."""
+        self.cur.execute(
+            "SELECT story_id FROM stories WHERE user_id=? ORDER BY creation_timestamp",
+            (user_id,),
+        )
+        return [s[0] for s in self.cur.fetchall()]
+
+    def get_contributed_stories(self, user_id):
+        """Returns list of story ids contributed to by this user.
+        The stories created by this user are included."""
+        self.cur.execute(
+            "SELECT DISTINCT story_id FROM blocks WHERE author_id=? ORDER BY creation_timestamp",
+            (user_id,),
+        )
+        return [s[0] for s in self.cur.fetchall()]
 
     def close(self):
         """Commits to the database and closes the cursor properly."""
@@ -196,7 +230,7 @@ desks.""",
     print(storyDAO)
     print(storyDAO.full_text())
     print()
-    
+
     print(storyDAO.last_block())
-    
+
     print(db.get_story("not a real id"))
