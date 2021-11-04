@@ -74,10 +74,17 @@ def register():
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
 
+
 @app.route("/append")
 def add():
     """Displays adding to story page"""
     return render_template("append.html")
+
+@app.route("/view")
+def view():
+    """Displays adding to story page"""
+    return render_template("view.html")
+
 
 @app.route("/logout")
 def logout():

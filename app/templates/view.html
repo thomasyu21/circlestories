@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!-- 
+    CircleTable - Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
+    SoftDev
+    P00: CircleStories
+
+    Viewing Story Page
+ -->
+
+<html>
+    <head>
+        <title>View Story</title>
+    </head>
+    <body>
+        <h2>Viewing Created Stories</h2>
+        <p>{{ entire_story }}</p> 
+        <br>
+        <p><a href="{{ url_for('logout') }}">Logout</a></p>
+        <p><a href="{{ url_for('add') }}">Add to Story</a></p>
+    </body>
+</html>
