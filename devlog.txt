@@ -87,3 +87,6 @@ stories.
 
 christopherL -- 2021-11-04 08:26
 Added roster and roles to README.
+
+naomiN -- 2021-11-04 08:33
+Added html template for creating new stories and edited routes to included new story page.
