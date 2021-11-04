@@ -20,6 +20,7 @@ DB_FILE = "circlestories.db"
 STORY_DB = storydb.StoryDB(DB_FILE)
 
 
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -75,17 +76,33 @@ def register():
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
 
+@app.route("/create")
+def create():
+    """Allows user to create to a new story"""
+    if "username" in session:
+        return redirect(url_for("index"))
 
-@app.route("/append")
-def add():
-    """Displays adding to story page"""
-    return render_template("append.html")
+    # GET request: display the form
+    if request.method == "GET":
+        return render_template("create.html")
+
+    # POST request: handle the form response and redirect
+    created_story = request.form.get("new", default="")
+
+    # Maybe put a flash message here to confirm everything works
+    return redirect(url_for("get_story"))
+
+# @app.route("/append")
+# def add():
+#     """Displays adding to story page"""
+
+#     return render_template("append.html")
 
 
-@app.route("/view")
-def view():
-    """Displays adding to story page"""
-    return render_template("view.html")
+# @app.route("/view")
+# def view():
+#     """Displays adding to story page"""
+#     return render_template("view.html")
 
 
 @app.route("/logout")
