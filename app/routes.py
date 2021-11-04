@@ -79,9 +79,6 @@ def register():
 @app.route("/create")
 def create():
     """Allows user to create to a new story"""
-    if "username" in session:
-        return redirect(url_for("index"))
-
     # GET request: display the form
     if request.method == "GET":
         return render_template("create.html")
