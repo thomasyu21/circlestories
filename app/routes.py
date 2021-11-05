@@ -20,7 +20,6 @@ DB_FILE = "circlestories.db"
 STORY_DB = storydb.StoryDB(DB_FILE)
 
 
-
 @app.route("/")
 @app.route("/index")
 def index():
@@ -76,6 +75,7 @@ def register():
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
 
+
 # @app.route("/create")
 # def create():
 #     """Allows user to create to a new story"""
@@ -100,6 +100,7 @@ def register():
 # def view():
 #     """Displays adding to story page"""
 #     return render_template("view.html")
+
 
 @app.route("/new")
 def new():
