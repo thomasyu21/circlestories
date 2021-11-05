@@ -13,12 +13,12 @@
     </head>
     <body>
         <h2>Create a New Story</h2>
-        <form action="submit_block" method="post">
+        <form action="/new_story" method="POST">
             <label for="text">Your New Story</label>
             <br>
-            <textarea name="text" placeholder="Title of new story"></textarea>
+            <textarea name="title" placeholder="Title of new story"></textarea>
             <br><br>
-            <textarea name="text" placeholder="Start new story here..."></textarea>
+            <textarea name="start" placeholder="Start new story here..."></textarea>
             <br>
             <input type="submit">
         </form>

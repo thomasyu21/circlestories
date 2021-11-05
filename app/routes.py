@@ -101,10 +101,10 @@ def register():
 #     """Displays adding to story page"""
 #     return render_template("view.html")
 
-@app.route("/new")
-def new():
+@app.route("/new_story")
+def new_story():
     """Displays creating a new story page"""
-    return render_template("new.html")
+    return render_template("new_story.html")
 
 
 @app.route("/logout")
