@@ -76,10 +76,6 @@ def register():
     return redirect(url_for("login"))
 
 @app.route("/new_story")
-# def new_story():
-#     """Displays creating a new story page"""
-#     return render_template("new_story.html")
-
 def new_story():
     """Allows user to create to a new story"""
     # GET request: display the form
@@ -89,6 +85,8 @@ def new_story():
     # POST request: handle the form response and redirect
     created_story_title = request.form.get("title", default="")
     created_story_content = request.form.get("start", default="")
+
+    STORY_DB.add_story(auth.get_user_id(session['username']), created_story_title)
 
     return redirect(url_for("get_story"))
 
