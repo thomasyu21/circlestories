@@ -20,7 +20,6 @@ DB_FILE = "circlestories.db"
 STORY_DB = storydb.StoryDB(DB_FILE)
 
 
-
 @app.route("/")
 @app.route("/index")
 def index():
@@ -75,6 +74,7 @@ def register():
 
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
+
 
 # @app.route("/create")
 # def create():
