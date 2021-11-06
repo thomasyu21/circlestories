@@ -76,7 +76,7 @@ def register():
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
 
-@app.route("/new_story", methods=["GET, POST"])
+@app.route("/new_story", methods=["GET", "POST"])
 def new_story():
     """Allows user to create to a new story"""
     # GET request: display the form
