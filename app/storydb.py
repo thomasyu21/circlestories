@@ -8,6 +8,7 @@ Handles everything related to story/block database management.
 """
 
 import sqlite3
+from contextlib import contextmanager
 
 SETUP_COMMANDS = """
 CREATE TABLE IF NOT EXISTS stories (
@@ -47,7 +48,7 @@ class StoryDB:
                 setattr(self, k, v)
 
         def update_with(self, cur, values):
-            """Used as update_cur.row_factory."""
+            """Used as cur.row_factory."""
             for k, v in zip(cur.description, values):
                 k = k[0]
                 setattr(self, k, v)
@@ -56,7 +57,7 @@ class StoryDB:
         @staticmethod
         def init_wrapper(db_obj):
             """Returns a function that creates a Story from a cursor and tuple of keys,
-            but with `db_obj` already set to the given object. Used for story_cur.row_factory."""
+            but with `db_obj` already set to the given object. Used for cur.row_factory."""
 
             def factory(cur, values):
                 return StoryDB.Story(
@@ -67,132 +68,137 @@ class StoryDB:
 
         def full_text(self):
             """Retrieves the concatenated text of all blocks with this story_id, in order."""
-            self.db_obj.block_cur.execute(
-                "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
-                (self.story_id,),
-            )
-            return "\n\n".join(t[0] for t in self.db_obj.block_cur.fetchall())
+            with self.db_obj.connect() as (con, cur):
+                cur.execute(
+                    "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
+                    (self.story_id,),
+                )
+                return "\n\n".join(t[0] for t in cur.fetchall())
 
         def add_block(self, author_id, block_text):
-            self.db_obj.block_cur.execute(
-                "INSERT INTO blocks(story_id, author_id, position, block_text) VALUES (?, ?, ?, ?)",
-                (self.story_id, author_id, self.num_blocks, block_text),
-            )
-            self.num_blocks += 1
-            self.db_obj.cur.execute(
-                "SELECT block_id FROM blocks WHERE rowid=last_insert_rowid() LIMIT 1"
-            )
-            self.last_block_id = self.db_obj.cur.fetchone()[0]
-            self.db_obj.update_cur.execute(
-                "UPDATE stories SET num_blocks=?, last_block_id=? WHERE story_id=? LIMIT 1",
-                (self.num_blocks, self.last_block_id, self.story_id),
-            )
-            # self.update()
+            with self.db_obj.connect() as (con, cur):
+                cur.execute(
+                    "INSERT INTO blocks(story_id, author_id, position, block_text) VALUES (?, ?, ?, ?)",
+                    (self.story_id, author_id, self.num_blocks, block_text),
+                )
+                self.num_blocks += 1
+                cur.execute(
+                    "SELECT block_id FROM blocks WHERE rowid=last_insert_rowid() LIMIT 1"
+                )
+                self.last_block_id = cur.fetchone()[0]
+                cur.execute(
+                    "UPDATE stories SET num_blocks=?, last_block_id=? WHERE story_id=?",
+                    (self.num_blocks, self.last_block_id, self.story_id),
+                )
+                # self.update()
 
         def last_block(self):
             """Returns the text of the last block"""
-            self.db_obj.block_cur.execute(
-                "SELECT block_text FROM blocks WHERE story_id=? AND position=? LIMIT 1",
-                (self.story_id, self.num_blocks - 1),
-            )
-            return self.db_obj.block_cur.fetchone()[0]
+            with self.db_obj.connect() as (con, cur):
+                cur.execute(
+                    "SELECT block_text FROM blocks WHERE story_id=? AND position=? LIMIT 1",
+                    (self.story_id, self.num_blocks - 1),
+                )
+                return cur.fetchone()[0]
 
         def update(self):
-            """Requests data from the database to update"""
-            self.db_obj.update_cur.row_factory = self.update_with
-            self.db_obj.update_cur.execute(
-                "SELECT * FROM stories WHERE story_id=? LIMIT 1", (self.story_id,)
-            )
-            self.db_obj.update_cur.fetchone()
+            """Requests data from the database to update this object"""
+            with self.db_obj.connect() as (con, cur):
+                cur.row_factory = self.update_with
+                cur.execute(
+                    "SELECT * FROM stories WHERE story_id=? LIMIT 1", (self.story_id,)
+                ).fetchone()
 
         def __repr__(self):
             return "Story(" + "|".join(map(repr, self.values)) + ")"
 
     def __init__(self, db_file):
         """Connects to the database and sets it up if necessary."""
-        self.con = sqlite3.connect(db_file)
-        self.cur = self.con.cursor()
-        self.block_cur = self.con.cursor()
-        self.story_cur = self.con.cursor()
-        self.update_cur = self.con.cursor()
-        self.story_cur.row_factory = StoryDB.Story.init_wrapper(self)
-        # self.cur.row_factory = sqlite3.Row
+        self.db_file = db_file
+        self.story_factory = StoryDB.Story.init_wrapper(self)
+        # self.cur = self.con.cursor()
+        # self.block_cur = self.con.cursor()
+        # self.story_cur = self.con.cursor()
+        # self.update_cur = self.con.cursor()
+        # self.story_cur.row_factory = self.story_factory
         self.setup()
-
+    
+    @contextmanager
+    def connect(self): # TODO: move to another file? so auth can use as well
+        """Context manager for a connection & cursor simultaneously"""
+        with sqlite3.connect(self.db_file) as con:
+            cur = con.cursor()
+            yield (con, cur)
+    
     def setup(self):
         """Runs database setup commands (creating tables).
         Should not fail if the database was already set up."""
-        self.story_cur.executescript(SETUP_COMMANDS)
+        with self.connect() as (con, cur):
+            cur.executescript(SETUP_COMMANDS)
 
     def add_story(self, creator_id, title):
         """Adds a story to the database and returns its story_id."""
-        self.story_cur.execute(
-            "INSERT INTO stories(creator_id, title) VALUES (?, ?)", (creator_id, title)
-        )
-        self.cur.execute(
-            "SELECT story_id FROM stories WHERE rowid=last_insert_rowid() LIMIT 1"
-        )
-        return self.cur.fetchone()[0]
+        with self.connect() as (con, cur):
+            cur.execute(
+                "INSERT INTO stories(creator_id, title) VALUES (?, ?)", (creator_id, title)
+            )
+            cur.execute(
+                "SELECT story_id FROM stories WHERE rowid=last_insert_rowid() LIMIT 1"
+            )
+            return cur.fetchone()[0]
 
     def get_story(self, story_id):
         """Returns a Story DAO (Data access object) that
         represents a particular row of the stories table."""
-        self.story_cur.execute(
-            "SELECT * FROM stories WHERE story_id=? LIMIT 1", (story_id,)
-        )
-        return self.story_cur.fetchone()
+        with self.connect() as (con, cur):
+            cur.row_factory = self.story_factory
+            cur.execute(
+                "SELECT * FROM stories WHERE story_id=? LIMIT 1", (story_id,)
+            )
+            return cur.fetchone()
 
     def is_contributor(self, user_id, story_id):
         """Returns whether this user contributed to this story.
         The creator counts as a contributor."""
-        self.cur.execute(
-            "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
-            (user_id, story_id),
-        )
-        return bool(self.cur.fetchone())
+        with self.connect() as (con, cur):
+            cur.execute(
+                "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
+                (user_id, story_id),
+            )
+            return bool(cur.fetchone())
 
     def is_creator(self, user_id, story_id):
         """Returns whether this user contributed to this story."""
-        self.cur.execute(
-            "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
-            (user_id, story_id),
-        )
-        return bool(self.cur.fetchone())
+        with self.connect() as (con, cur):
+            cur.execute(
+                "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
+                (user_id, story_id),
+            )
+            return bool(cur.fetchone())
 
     def get_created_stories(self, user_id):
         """Returns list of story ids created by this user."""
-        self.cur.execute(
-            "SELECT story_id FROM stories WHERE user_id=? ORDER BY creation_timestamp",
-            (user_id,),
-        )
-        return [s[0] for s in self.cur.fetchall()]
+        with self.connect() as (con, cur):
+            cur.execute(
+                "SELECT story_id FROM stories WHERE user_id=? ORDER BY creation_timestamp",
+                (user_id,),
+            )
+            return [s[0] for s in cur.fetchall()]
 
     def get_contributed_stories(self, user_id):
         """Returns list of story ids contributed to by this user.
         The stories created by this user are included."""
-        self.cur.execute(
-            "SELECT DISTINCT story_id FROM blocks WHERE author_id=? ORDER BY creation_timestamp",
-            (user_id,),
-        )
-        return [s[0] for s in self.cur.fetchall()]
-
-    def close(self):
-        """Commits to the database and closes the cursor properly."""
-        print("StoryDB object closing...")
-        self.con.commit()
-        self.con.close()
-
-    def __del__(self):
-        """Ensures that the database is properly closed when
-        this object is removed by the garbage collector."""
-        self.close()
-        print("StoryDB object deleted")
-
+        with self.connect() as (con, cur):
+            cur.execute(
+                "SELECT DISTINCT story_id FROM blocks WHERE author_id=? ORDER BY creation_timestamp",
+                (user_id,),
+            )
+            return [s[0] for s in cur.fetchall()]
 
 # FOR TESTING PURPOSES (not part of the actual app)
 if __name__ == "__main__":
     print("Testing StoryDB functionality")
-    db = StoryDB(":memory:")
+    db = StoryDB("TEMP_DB.db")
 
     insertedStory = db.add_story(26_21_19_21_06, "How I was Two Periods Late to School")
     print(insertedStory)
@@ -210,7 +216,7 @@ I stood on the crowded S79, which is usually a 30 minute ride.
 This time it was about an hour long, due to heavy traffic and a different route.
 By the time I arrived at school, there was only 10 minutes left in 2nd period.""",
     )
-
+    storyDAO.update()
     print()
     print(storyDAO)
     print(storyDAO.full_text())
@@ -225,6 +231,7 @@ chatted with a friend until 3rd period. We got cool new dry-erase whiteboard
 desks in that class. This story is going off topic. But they are pretty cool
 desks.""",
     )
+    storyDAO.update()
 
     print()
     print(storyDAO)
@@ -234,3 +241,6 @@ desks.""",
     print(storyDAO.last_block())
 
     print(db.get_story("not a real id"))
+    
+    import os
+    os.remove("TEMP_DB.db")

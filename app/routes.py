@@ -13,6 +13,7 @@ from flask import render_template, redirect, request, url_for, session
 
 from app import app
 from app import storydb
+from app import auth
 from app.auth import authenticate_user, create_user
 
 DB_FILE = "circlestories.db"
@@ -101,6 +102,7 @@ def register():
 #     """Displays adding to story page"""
 #     return render_template("view.html")
 
+
 @app.route("/new_story")
 def new_story():
     """Displays creating a new story page"""
@@ -120,13 +122,26 @@ def logout():
 def get_story(story_id):
     if "username" not in session:
         # "You need to login!"
-        return ""
+        # or non-users should be allowed to contibute? idk
+        return render_template(
+            "error.html",
+            error_title="Login Required",
+            error_msg="You must log in to view this page.",
+        )
     else:
-        user_id = 0  # TODO: get from auth.py
-        story_creator = STORY_DB.get_story(story_id).creator_id
-        if story_creator != user_id:
-            # "You do not have access to this story!"
-            # or "Story not found" if we don't want to know this story exists
-            return ""
-        text = STORY_DB.get_story(story_id).full_text()
-        return text  # TODO: render from template
+        user_id = auth.get_user_id(session["username"])
+        # if this user has contributed to this story, display the whole text
+        if STORY_DB.is_contributor(user_id, story_id):
+            text = STORY_DB.get_story(story_id).full_text()
+            return render_template("view.html", entire_story=text)
+        else:
+            story = STORY_DB.get_story(story_id)
+            if story is not None:  # otherwise, if the story exists, show form to append
+                return render_template(
+                    "append.html", last_block=STORY_DB.get_story(story_id).last_block()
+                )
+            return render_template(
+                "error.html",
+                error_title="Story Not Found",
+                error_msg="Either this story was deleted, or never existed to begin with. Please go back.",
+            )
