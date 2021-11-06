@@ -76,6 +76,7 @@ def register():
     # Maybe put a flash message here to confirm everything works
     return redirect(url_for("login"))
 
+
 @app.route("/new_story", methods=["GET", "POST"])
 def new_story():
     """Allows user to create to a new story"""
@@ -86,12 +87,13 @@ def new_story():
     # POST request: handle the form response and redirect
     created_story_title = request.form.get("title", default="")
     created_story_content = request.form.get("start", default="")
-    username = auth.get_user_id(session['username'])
+    username = auth.get_user_id(session["username"])
 
     STORY_DB.add_story(username, created_story_title)
     STORY_DB.add_block(username, created_story_content)
 
     return redirect(url_for("get_story"))
+
 
 @app.route("/logout")
 def logout():

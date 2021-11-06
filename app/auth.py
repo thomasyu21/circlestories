@@ -25,7 +25,7 @@ def validate_registration(
     username: str, email: str, password: str, password_check: str
 ) -> list:
     """Validates input for new user creation."""
-    
+
     with sqlite3.connect(DB_FILE) as db:
 
         c = db.cursor()
@@ -44,7 +44,9 @@ def validate_registration(
         if len(email) == 0:
             errors.append("Email is required")
         if (
-            c.execute("SELECT * FROM users WHERE email=:email", {"email": email}).fetchone()
+            c.execute(
+                "SELECT * FROM users WHERE email=:email", {"email": email}
+            ).fetchone()
             is not None
         ):
             errors.append("Email already in use")
@@ -66,7 +68,7 @@ def validate_registration(
 
 def create_user(username: str, email: str, password: str, password_check: str) -> list:
     """Validates inputs and creates a new user if all inputs are valid."""
-    
+
     with sqlite3.connect(DB_FILE) as db:
         c = db.cursor()
 
@@ -104,7 +106,8 @@ def authenticate_user(username: str, password: str) -> bool:
             return False
 
         user_pw = c.execute(
-            "SELECT password FROM users WHERE username=:username", {"username": username}
+            "SELECT password FROM users WHERE username=:username",
+            {"username": username},
         ).fetchone()
         if user_pw is not None and user_pw[0] == hash_password(password):
             return True
@@ -115,7 +118,7 @@ def authenticate_user(username: str, password: str) -> bool:
 def get_user_id(username: str) -> str:
     """Returns the user ID associated with the given username, None if user
     doesn't exist."""
-    
+
     with sqlite3.connect(DB_FILE) as db:
         c = db.cursor()
 

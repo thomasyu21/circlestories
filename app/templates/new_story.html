@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<!-- 
-    CircleTable - Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
+<!--
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
     SoftDev
     P00: CircleStories
 
-    Creating a New Story
- -->
+    Page for Creating a New Story
+-->
+
+<!DOCTYPE html>
 
 <html>
     <head>
@@ -13,14 +14,18 @@
     </head>
     <body>
         <h2>Create a New Story</h2>
+        <p>
+            Begin a new story here! Give it a title and write the beginning.
+            Other users will be able to add on with their own ideas!
+        </p>
         <form action="/new_story" method="POST">
-            <label for="text">Your New Story</label>
-            <br>
-            <textarea name="title" placeholder="Title of new story" rows="30" cols="50"></textarea>
-            <br><br>
-            <textarea name="start" placeholder="Start new story here..." rows="30" cols="50"></textarea>
-            <br>
-            <input type="submit">
+            <p>
+                <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70"></textarea>
+            </p>
+            <p>
+                <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70"></textarea>
+            </p>
+            <input type="submit" value="Create new story!">
         </form>
     </body>
 </html>

@@ -122,14 +122,14 @@ class StoryDB:
         # self.update_cur = self.con.cursor()
         # self.story_cur.row_factory = self.story_factory
         self.setup()
-    
+
     @contextmanager
-    def connect(self): # TODO: move to another file? so auth can use as well
+    def connect(self):  # TODO: move to another file? so auth can use as well
         """Context manager for a connection & cursor simultaneously"""
         with sqlite3.connect(self.db_file) as con:
             cur = con.cursor()
             yield (con, cur)
-    
+
     def setup(self):
         """Runs database setup commands (creating tables).
         Should not fail if the database was already set up."""
@@ -140,7 +140,8 @@ class StoryDB:
         """Adds a story to the database and returns its story_id."""
         with self.connect() as (con, cur):
             cur.execute(
-                "INSERT INTO stories(creator_id, title) VALUES (?, ?)", (creator_id, title)
+                "INSERT INTO stories(creator_id, title) VALUES (?, ?)",
+                (creator_id, title),
             )
             cur.execute(
                 "SELECT story_id FROM stories WHERE rowid=last_insert_rowid() LIMIT 1"
@@ -152,9 +153,7 @@ class StoryDB:
         represents a particular row of the stories table."""
         with self.connect() as (con, cur):
             cur.row_factory = self.story_factory
-            cur.execute(
-                "SELECT * FROM stories WHERE story_id=? LIMIT 1", (story_id,)
-            )
+            cur.execute("SELECT * FROM stories WHERE story_id=? LIMIT 1", (story_id,))
             return cur.fetchone()
 
     def is_contributor(self, user_id, story_id):
@@ -194,6 +193,7 @@ class StoryDB:
                 (user_id,),
             )
             return [s[0] for s in cur.fetchall()]
+
 
 # FOR TESTING PURPOSES (not part of the actual app)
 if __name__ == "__main__":
@@ -241,6 +241,7 @@ desks.""",
     print(storyDAO.last_block())
 
     print(db.get_story("not a real id"))
-    
+
     import os
+
     os.remove("TEMP_DB.db")

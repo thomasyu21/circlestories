@@ -3,17 +3,19 @@
     SoftDev
     P00: CircleStories
 
-    Error Handler Page
+    Page for Viewing an Existing Story
 -->
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>{{ error_title }}</title>
+        <title>{{ story_title }}</title>
     </head>
     <body>
-        <h1>{{ error_title }}</h1>
-        <p>{{ error_msg }}</p>
+        <h2>{{ story_title }}</h2>
+        {% for block in blocks %}
+        <p>{{ block }}</p>
+        {% endfor %}
     </body>
 </html>
