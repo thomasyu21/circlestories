@@ -102,3 +102,9 @@ acceptance with authentication.
 
 devenM -- 2021-11-05 08:40
 Made new_story design easier to interact with and connected it with storydb. 
+
+yusufE -- 2021-11-6 14:52
+Fixed multithreading database bug
+Added error.html template
+Fixed incorrect endpoint in homepage.html
+Fixed methods of `/new_story`
