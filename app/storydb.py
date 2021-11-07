@@ -36,8 +36,8 @@ class StoryDB:
     Only one should be created per app instance."""
 
     class Story:
-        """This is a DAO (Data Access Object, i.e. a representation of data in the database).
-        You can get these through `StoryDB.get_story(story_id)`"""
+        """This is a DAO (Data Access Object, i.e. a representation of data in
+        the database). You can get these through `StoryDB.get_story(story_id)`"""
 
         def __init__(self, db_obj, keys, values):
             self.db_obj = db_obj
@@ -49,6 +49,7 @@ class StoryDB:
 
         def update_with(self, cur, values):
             """Used as cur.row_factory."""
+
             for k, v in zip(cur.description, values):
                 k = k[0]
                 setattr(self, k, v)
@@ -56,8 +57,9 @@ class StoryDB:
 
         @staticmethod
         def init_wrapper(db_obj):
-            """Returns a function that creates a Story from a cursor and tuple of keys,
-            but with `db_obj` already set to the given object. Used for cur.row_factory."""
+            """Returns a function that creates a Story from a cursor and tuple
+            of keys, but with `db_obj` already set to the given object. Used
+            for cur.row_factory."""
 
             def factory(cur, values):
                 return StoryDB.Story(
@@ -67,8 +69,10 @@ class StoryDB:
             return factory
 
         def get_blocks(self):
-            """Retrieves the concatenated text of all blocks with this story_id, in order."""
-            with self.db_obj.connect() as (con, cur):
+            """Retrieves the concatenated text of all blocks with this
+            story_id, in order."""
+
+            with self.db_obj.connect() as cur:
                 cur.execute(
                     "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
                     (self.story_id,),
@@ -76,9 +80,10 @@ class StoryDB:
                 return [block[0] for block in cur.fetchall()]
 
         def add_block(self, author_id, block_text):
-            with self.db_obj.connect() as (con, cur):
+            with self.db_obj.connect() as cur:
                 cur.execute(
-                    "INSERT INTO blocks(story_id, author_id, position, block_text) VALUES (?, ?, ?, ?)",
+                    """INSERT INTO blocks(story_id, author_id, position, block_text)
+                    VALUES (?, ?, ?, ?)""",
                     (self.story_id, author_id, self.num_blocks, block_text),
                 )
                 self.num_blocks += 1
@@ -94,7 +99,7 @@ class StoryDB:
 
         def last_block(self):
             """Returns the text of the last block"""
-            with self.db_obj.connect() as (con, cur):
+            with self.db_obj.connect() as cur:
                 cur.execute(
                     "SELECT block_text FROM blocks WHERE story_id=? AND position=? LIMIT 1",
                     (self.story_id, self.num_blocks - 1),
@@ -103,7 +108,7 @@ class StoryDB:
 
         def update(self):
             """Requests data from the database to update this object"""
-            with self.db_obj.connect() as (con, cur):
+            with self.db_obj.connect() as cur:
                 cur.row_factory = self.update_with
                 cur.execute(
                     "SELECT * FROM stories WHERE story_id=? LIMIT 1", (self.story_id,)
@@ -128,17 +133,17 @@ class StoryDB:
         """Context manager for a connection & cursor simultaneously"""
         with sqlite3.connect(self.db_file) as con:
             cur = con.cursor()
-            yield (con, cur)
+            yield cur
 
     def setup(self):
         """Runs database setup commands (creating tables).
         Should not fail if the database was already set up."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.executescript(SETUP_COMMANDS)
 
     def add_story(self, creator_id, title):
         """Adds a story to the database and returns its story_id."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.execute(
                 "INSERT INTO stories(creator_id, title) VALUES (?, ?)",
                 (creator_id, title),
@@ -151,7 +156,7 @@ class StoryDB:
     def get_story(self, story_id):
         """Returns a Story DAO (Data access object) that
         represents a particular row of the stories table."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.row_factory = self.story_factory
             cur.execute("SELECT * FROM stories WHERE story_id=? LIMIT 1", (story_id,))
             return cur.fetchone()
@@ -159,7 +164,7 @@ class StoryDB:
     def is_contributor(self, user_id, story_id):
         """Returns whether this user contributed to this story.
         The creator counts as a contributor."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.execute(
                 "SELECT TRUE FROM blocks WHERE author_id=? AND story_id=? LIMIT 1",
                 (user_id, story_id),
@@ -168,7 +173,7 @@ class StoryDB:
 
     def is_creator(self, user_id, story_id):
         """Returns whether this user contributed to this story."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.execute(
                 "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
                 (user_id, story_id),
@@ -177,7 +182,7 @@ class StoryDB:
 
     def get_created_stories(self, user_id):
         """Returns list of story ids created by this user."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.execute(
                 "SELECT story_id FROM stories WHERE user_id=? ORDER BY creation_timestamp",
                 (user_id,),
@@ -187,21 +192,23 @@ class StoryDB:
     def get_contributed_stories(self, user_id):
         """Returns list of story ids contributed to by this user.
         The stories created by this user are included."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.execute(
-                "SELECT DISTINCT story_id FROM blocks WHERE author_id=? ORDER BY creation_timestamp",
+                """SELECT DISTINCT story_id FROM blocks WHERE author_id=?
+                ORDER BY creation_timestamp""",
                 (user_id,),
             )
             return [s[0] for s in cur.fetchall()]
-        
 
     def get_not_contributed_stories(self, user_id):
         """Returns list of story ids not contributed to by this user."""
-        with self.connect() as (con, cur):
+        with self.connect() as cur:
             cur.execute(
                 "SELECT DISTINCT story_id FROM blocks ORDER BY creation_timestamp"
             )
-            return [s[0] for s in cur.fetchall() if not self.is_contributor(user_id, s[0])]
+            return [
+                s[0] for s in cur.fetchall() if not self.is_contributor(user_id, s[0])
+            ]
 
 
 # FOR TESTING PURPOSES (not part of the actual app)

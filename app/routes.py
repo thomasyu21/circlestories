@@ -7,18 +7,15 @@
 Handles all of the Flask app routes for CircleStories.
 """
 
-import sqlite3
-
 from flask import render_template, redirect, request, url_for, session
 
 from app import app
-from app import storydb
-from app import auth
 from app.auth import authenticate_user, create_user, get_user_id
+from app.storydb import StoryDB
 
 DB_FILE = "circlestories.db"
 
-STORY_DB = storydb.StoryDB(DB_FILE)
+STORY_DB = StoryDB(DB_FILE)
 
 
 @app.route("/")
@@ -43,7 +40,7 @@ def index():
             "homepage.html",
             username=session["username"],
             contributed_stories=contributed_stories,
-            not_contributed_stories=not_contributed_stories
+            not_contributed_stories=not_contributed_stories,
         )
 
     return render_template("guest.html")
@@ -106,7 +103,8 @@ def logout():
 
 @app.route("/new_story", methods=["GET", "POST"])
 def new_story():
-    """Allows user to create to a new story"""
+    """Allows user to create to a new story."""
+
     if "username" not in session:
         return redirect(url_for("index"))
 
@@ -127,13 +125,16 @@ def new_story():
 
 @app.route("/story/<story_id>", methods=["GET", "POST"])
 def story(story_id):
+    """Given a story_id, displays the full story if the user has already
+    contributed to it or provides an append form to add to the existing story."""
+
     if "username" not in session:
         return redirect(url_for("index"))
     user_id = get_user_id(session["username"])
 
     # Make sure the story exists
-    story = STORY_DB.get_story(story_id)
-    if not story:
+    story_obj = STORY_DB.get_story(story_id)
+    if not story_obj:
         return render_template(
             "error.html",
             error_title="Story Not Found",
@@ -144,15 +145,22 @@ def story(story_id):
     if STORY_DB.is_contributor(user_id, story_id):
         print("HELLO")
         return render_template(
-            "view_story.html", story_title=story.title, story_blocks=story.get_blocks()
+            "view_story.html",
+            story_title=story_obj.title,
+            story_blocks=story_obj.get_blocks(),
         )
 
     # If user has not contributed, show append form
     if request.method == "GET":
-        last_block = story.last_block()
-        return render_template("append_story.html", story_id=story_id, story_title=story.title, last_block=last_block)
+        last_block = story_obj.last_block()
+        return render_template(
+            "append_story.html",
+            story_id=story_id,
+            story_title=story_obj.title,
+            last_block=last_block,
+        )
 
     # Handle story append response
     new_block_text = request.form.get("text", default="")
-    story.add_block(user_id, new_block_text)
+    story_obj.add_block(user_id, new_block_text)
     return redirect(url_for("story", story_id=story_id))
