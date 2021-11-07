@@ -1,5 +1,5 @@
 <!--
-    CircleTable -- Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
     SoftDev
     P00: CircleStories
 
@@ -12,6 +12,13 @@
         <title>Register</title>
     </head>
     <body>
+        <!-- Nav -->
+        <p>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </p>
+        
+        <!-- Page Content -->
         <h1>Register</h1>
         <h2>Welcome to CircleStories! Complete the following fields to register.</h2>
         <form action="/register", method="POST">

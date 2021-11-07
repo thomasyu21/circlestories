@@ -14,7 +14,7 @@ from flask import render_template, redirect, request, url_for, session
 from app import app
 from app import storydb
 from app import auth
-from app.auth import authenticate_user, create_user
+from app.auth import authenticate_user, create_user, get_user_id
 
 DB_FILE = "circlestories.db"
 
@@ -26,7 +26,25 @@ STORY_DB = storydb.StoryDB(DB_FILE)
 def index():
     """CircleStories homepage."""
     if "username" in session:
-        return render_template("homepage.html", username=session["username"])
+        user_id = get_user_id(session["username"])
+        contributed_stories = STORY_DB.get_contributed_stories(user_id)
+        contributed_stories = [
+            (story_id, STORY_DB.get_story(story_id).title)
+            for story_id in contributed_stories
+        ]
+
+        not_contributed_stories = STORY_DB.get_not_contributed_stories(user_id)
+        not_contributed_stories = [
+            (story_id, STORY_DB.get_story(story_id).title)
+            for story_id in not_contributed_stories
+        ]
+
+        return render_template(
+            "homepage.html",
+            username=session["username"],
+            contributed_stories=contributed_stories,
+            not_contributed_stories=not_contributed_stories
+        )
 
     return render_template("guest.html")
 
@@ -77,24 +95,6 @@ def register():
     return redirect(url_for("login"))
 
 
-@app.route("/new_story", methods=["GET", "POST"])
-def new_story():
-    """Allows user to create to a new story"""
-    # GET request: display the form
-    if request.method == "GET":
-        return render_template("new_story.html")
-
-    # POST request: handle the form response and redirect
-    created_story_title = request.form.get("title", default="")
-    created_story_content = request.form.get("start", default="")
-    username = auth.get_user_id(session["username"])
-
-    STORY_DB.add_story(username, created_story_title)
-    STORY_DB.add_block(username, created_story_content)
-
-    return redirect(url_for("get_story"))
-
-
 @app.route("/logout")
 def logout():
     """Logs out the current user."""
@@ -104,30 +104,55 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/story/<story_id>")
-def get_story(story_id):
+@app.route("/new_story", methods=["GET", "POST"])
+def new_story():
+    """Allows user to create to a new story"""
     if "username" not in session:
-        # "You need to login!"
-        # or non-users should be allowed to contibute? idk
+        return redirect(url_for("index"))
+
+    # GET request: display the form
+    if request.method == "GET":
+        return render_template("new_story.html")
+
+    # POST request: handle the form response and redirect
+    created_story_title = request.form.get("title", default="")
+    created_story_content = request.form.get("text", default="")
+    user_id = get_user_id(session["username"])
+
+    story_id = STORY_DB.add_story(user_id, created_story_title)
+    STORY_DB.get_story(story_id).add_block(user_id, created_story_content)
+
+    return redirect(url_for("story", story_id=story_id))
+
+
+@app.route("/story/<story_id>", methods=["GET", "POST"])
+def story(story_id):
+    if "username" not in session:
+        return redirect(url_for("index"))
+    user_id = get_user_id(session["username"])
+
+    # Make sure the story exists
+    story = STORY_DB.get_story(story_id)
+    if not story:
         return render_template(
             "error.html",
-            error_title="Login Required",
-            error_msg="You must log in to view this page.",
+            error_title="Story Not Found",
+            error_msg="Sorry! This story was deleted or does not exist.",
         )
-    else:
-        user_id = auth.get_user_id(session["username"])
-        # if this user has contributed to this story, display the whole text
-        if STORY_DB.is_contributor(user_id, story_id):
-            text = STORY_DB.get_story(story_id).full_text()
-            return render_template("view.html", entire_story=text)
-        else:
-            story = STORY_DB.get_story(story_id)
-            if story is not None:  # otherwise, if the story exists, show form to append
-                return render_template(
-                    "append.html", last_block=STORY_DB.get_story(story_id).last_block()
-                )
-            return render_template(
-                "error.html",
-                error_title="Story Not Found",
-                error_msg="Either this story was deleted, or never existed to begin with. Please go back.",
-            )
+
+    # View entire story if user has contributed
+    if STORY_DB.is_contributor(user_id, story_id):
+        print("HELLO")
+        return render_template(
+            "view_story.html", story_title=story.title, story_blocks=story.get_blocks()
+        )
+
+    # If user has not contributed, show append form
+    if request.method == "GET":
+        last_block = story.last_block()
+        return render_template("append_story.html", story_id=story_id, story_title=story.title, last_block=last_block)
+
+    # Handle story append response
+    new_block_text = request.form.get("text", default="")
+    story.add_block(user_id, new_block_text)
+    return redirect(url_for("story", story_id=story_id))

@@ -1,5 +1,5 @@
 <!--
-    CircleTable -- Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
     SoftDev
     P00: CircleStories
 
@@ -12,9 +12,43 @@
         <title>Home</title>
     </head>
     <body>
+        <!-- Nav -->
+        <p>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </p>
+        
+        <!-- Page Content -->
         <h1>Welcome, {{ username }}!</h1>
-        <h2>You are successfully logged in.</h2>
-        <p><a href="{{ url_for('logout') }}">Logout</a></p>
-        <p><a href="{{ url_for('new_story') }}">New Story</a></p>
+        <h2>
+            You are successfully logged in. Create a
+            <a href="{{ url_for('new_story') }}">new story</a> or add to an
+            existing one!
+        </h2>
+        <h2>Contribute to an Existing Story!</h2>
+        {% if not_contributed_stories %}
+        <ul>
+            {% for story in not_contributed_stories %}
+            <li><a href="{{ url_for('story', story_id=story[0]) }}">{{ story[1] }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>
+            You've contributed to every story!
+        </p>
+        {% endif %}
+
+        <h2>View Stories You've Contributed To</h2>
+        {% if contributed_stories %}
+        <ul>
+            {% for story in contributed_stories %}
+            <li><a href="{{ url_for('story', story_id=story[0]) }}">{{ story[1] }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>
+            You haven't contributed to any stories yet!
+        </p>
+        {% endif %}
     </body>
 </html>

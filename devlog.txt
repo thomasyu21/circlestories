@@ -1,7 +1,6 @@
-CircleTable — Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
+CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
 SoftDev
-P00
-2021-10-26
+P00: CircleStories
 
 christopherL -- 2021-10-27 09:02
 Added basic file structure for app routes; added a wrapper file at the root
@@ -42,8 +41,8 @@ Added all of my work from 2021-10-27 until now, including:
 A lot of the current design is still subject to change.
 
 devenM -- 2021-11-01 08:22
-Created login and register html pages. Still tweaking with routing and connecting to db. 
-(register.html and login.html)
+Created login and register html pages. Still tweaking with routing and
+connecting to db. (register.html and login.html)
 
 yusufE -- 2021-11-01 08:39
 Fixed story & block random ids by storing as hex
@@ -51,8 +50,8 @@ Fixed updating values for a Story DAO
 Started append.html template for adding to stories
 
 devenM -- 2021-11-01 13:44
-Fixed login and register pages to display username, password, and email prompts. 
-Need to import session to track user cookies
+Fixed login and register pages to display username, password, and email
+prompts. Need to import session to track user cookies
 (register.html and login.html)
 
 christopherL -- 2021-11-02 14:14
@@ -74,7 +73,7 @@ some basic refactoring as well.
 devenM -- 2021-11-03 08:34
 Added append and view front end pages. Routed append to main site. Allowing
 user to add to most recent block and view the entire creation on another page.
-Using story database  block ID's to link entire stories. 
+Using story database block ID's to link entire stories. 
 
 christopherL -- 2021-11-03 09:29
 Added a method to get a user ID from a username.
@@ -103,8 +102,15 @@ acceptance with authentication.
 devenM -- 2021-11-05 08:40
 Made new_story design easier to interact with and connected it with storydb. 
 
-yusufE -- 2021-11-6 14:52
+yusufE -- 2021-11-06 14:52
 Fixed multithreading database bug
 Added error.html template
 Fixed incorrect endpoint in homepage.html
 Fixed methods of `/new_story`
+
+christopherL -- 2021-11-06 22:18
+Added routing for all of the story/block database functionality. We can now
+create new stories, add to existing stories, and view existing stories, all
+with the appropriate permissions settings based on the user that is stored in
+the current session. Lots of QA still to do, but we have a minimum viable
+product! Also cleaned up the devlog and standardized our team header.

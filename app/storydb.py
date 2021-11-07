@@ -66,14 +66,14 @@ class StoryDB:
 
             return factory
 
-        def full_text(self):
+        def get_blocks(self):
             """Retrieves the concatenated text of all blocks with this story_id, in order."""
             with self.db_obj.connect() as (con, cur):
                 cur.execute(
                     "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
                     (self.story_id,),
                 )
-                return "\n\n".join(t[0] for t in cur.fetchall())
+                return [block[0] for block in cur.fetchall()]
 
         def add_block(self, author_id, block_text):
             with self.db_obj.connect() as (con, cur):
@@ -161,7 +161,7 @@ class StoryDB:
         The creator counts as a contributor."""
         with self.connect() as (con, cur):
             cur.execute(
-                "SELECT TRUE FROM stories WHERE creator_id=? AND story_id=? LIMIT 1",
+                "SELECT TRUE FROM blocks WHERE author_id=? AND story_id=? LIMIT 1",
                 (user_id, story_id),
             )
             return bool(cur.fetchone())
@@ -193,6 +193,15 @@ class StoryDB:
                 (user_id,),
             )
             return [s[0] for s in cur.fetchall()]
+        
+
+    def get_not_contributed_stories(self, user_id):
+        """Returns list of story ids not contributed to by this user."""
+        with self.connect() as (con, cur):
+            cur.execute(
+                "SELECT DISTINCT story_id FROM blocks ORDER BY creation_timestamp"
+            )
+            return [s[0] for s in cur.fetchall() if not self.is_contributor(user_id, s[0])]
 
 
 # FOR TESTING PURPOSES (not part of the actual app)

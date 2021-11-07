@@ -1,4 +1,4 @@
-# CircleTable — Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
+# CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
 # SoftDev
 # P00
 # 2021-10-27

@@ -1,5 +1,5 @@
 <!--
-    CircleTable -- Christopher Liu, Yusuf Elsharawy, Naomi Naranjo, Deven Maheshwari
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
     SoftDev
     P00: CircleStories
 
@@ -13,7 +13,14 @@
         <title>New Story</title>
     </head>
     <body>
-        <h2>Create a New Story</h2>
+        <!-- Nav -->
+        <p>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </p>
+        
+        <!-- Page Content -->
+        <h1>Create a New Story</h1>
         <p>
             Begin a new story here! Give it a title and write the beginning.
             Other users will be able to add on with their own ideas!

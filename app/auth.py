@@ -1,4 +1,4 @@
-# CircleTable — Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
+# CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
 # SoftDev
 # P00: CircleStories
 
@@ -123,7 +123,7 @@ def get_user_id(username: str) -> str:
         c = db.cursor()
 
         user_id = c.execute(
-            "SELECT user_id FROM users WHERE username=:username", {"username", username}
+            "SELECT user_id FROM users WHERE username=:username", {"username": username}
         ).fetchone()
 
         if user_id is not None:
