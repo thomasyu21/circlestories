@@ -114,3 +114,6 @@ create new stories, add to existing stories, and view existing stories, all
 with the appropriate permissions settings based on the user that is stored in
 the current session. Lots of QA still to do, but we have a minimum viable
 product! Also cleaned up the devlog and standardized our team header.
+
+naomiN -- 2021-11-07 21:15
+Added an app description to README and to guest landing page 
