@@ -117,14 +117,15 @@ def new_story():
     created_story_content = request.form.get("text", default="")
     user_id = get_user_id(session["username"])
     
-    title_helper = False
-    content_helper = False
+    no_title = False
+    no_content = False
     if (len(created_story_title) == 0):
-        title_helper = True
-        if (len(created_story_content) == 0):
-            content_helper = True
-            return render_template("new_story.html", no_title=title_helper, no_content=content_helper)
-        return render_template("new_story.html", no_title=title_helper)
+        no_title = True
+    if (len(created_story_content) == 0):
+        no_content = True
+    if (no_title or no_content):
+        return render_template("new_story.html", no_title=no_title, no_content=no_content)
+
 
     story_id = STORY_DB.add_story(user_id, created_story_title)
     STORY_DB.get_story(story_id).add_block(user_id, created_story_content)
