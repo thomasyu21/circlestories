@@ -125,18 +125,8 @@ def new_story():
     if (len(created_story_content) == 0):
         no_content = True
     # No title and no content
-    if (no_title and no_content):
+    if (no_title or no_content):
         return render_template("new_story.html", no_title=no_title, no_content=no_content)
-    # No title 
-    if (no_title and not no_content):
-        return render_template("new_story.html", no_title=no_title, no_content=no_content, 
-        content_input=created_story_content)
-    # No content
-    if (not no_title and no_content):
-        return render_template("new_story.html", no_title=no_title, no_content=no_content, 
-        title_input=created_story_title)
-
-
 
     story_id = STORY_DB.add_story(user_id, created_story_title)
     STORY_DB.get_story(story_id).add_block(user_id, created_story_content)
