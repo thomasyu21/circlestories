@@ -116,4 +116,8 @@ the current session. Lots of QA still to do, but we have a minimum viable
 product! Also cleaned up the devlog and standardized our team header.
 
 naomiN -- 2021-11-07 21:15
-Added an app description to README and to guest landing page 
+Added an app description to README and to guest landing page
+
+devenM -- 2021-11-08 13:45
+Added required inputs for new story to ensure title and content are entered. 
+Altered routing for new story to test. 
