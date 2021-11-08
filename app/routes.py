@@ -117,14 +117,25 @@ def new_story():
     created_story_content = request.form.get("text", default="")
     user_id = get_user_id(session["username"])
     
+    # Checks if user has inputted a title and/or content. 
     no_title = False
     no_content = False
     if (len(created_story_title) == 0):
         no_title = True
     if (len(created_story_content) == 0):
         no_content = True
-    if (no_title or no_content):
+    # No title and no content
+    if (no_title and no_content):
         return render_template("new_story.html", no_title=no_title, no_content=no_content)
+    # No title 
+    if (no_title and not no_content):
+        return render_template("new_story.html", no_title=no_title, no_content=no_content, 
+        content_input=created_story_content)
+    # No content
+    if (not no_title and no_content):
+        return render_template("new_story.html", no_title=no_title, no_content=no_content, 
+        title_input=created_story_title)
+
 
 
     story_id = STORY_DB.add_story(user_id, created_story_title)

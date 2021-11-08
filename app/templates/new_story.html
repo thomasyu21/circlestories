@@ -30,14 +30,14 @@
             {% if no_title %}
                 <label style="color: red">A title is required</label><br>
             {% endif %}
-            <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70"></textarea>
+            <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70" value="{{title_input}}"></textarea>
             </p>
             
             <p>
             {% if no_content %}
                 <label style="color: red">Content is required</label><br>
             {% endif %}
-            <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70"></textarea>
+            <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70" value="{{content_input}}"></textarea>
             </p>
 
             <input type="submit" value="Create new story!">
