@@ -7,8 +7,8 @@
 Handles everything related to story/block database management.
 """
 
-import sqlite3
 from contextlib import contextmanager
+import sqlite3
 
 SETUP_COMMANDS = """
 CREATE TABLE IF NOT EXISTS stories (
@@ -80,6 +80,8 @@ class StoryDB:
                 return [block[0] for block in cur.fetchall()]
 
         def add_block(self, author_id, block_text):
+            """Adds a new block to this Story with the provided author_id and
+            block_text."""
             with self.db_obj.connect() as cur:
                 cur.execute(
                     """INSERT INTO blocks(story_id, author_id, position, block_text)
@@ -90,7 +92,8 @@ class StoryDB:
                 cur.execute(
                     "SELECT block_id FROM blocks WHERE rowid=last_insert_rowid() LIMIT 1"
                 )
-                self.last_block_id = cur.fetchone()[0]
+                # last_block_id will be added with setattr
+                self.last_block_id = cur.fetchone()[0]  # pylint: disable=W0201
                 cur.execute(
                     "UPDATE stories SET num_blocks=?, last_block_id=? WHERE story_id=?",
                     (self.num_blocks, self.last_block_id, self.story_id),
@@ -129,7 +132,7 @@ class StoryDB:
         self.setup()
 
     @contextmanager
-    def connect(self):  # TODO: move to another file? so auth can use as well
+    def connect(self):
         """Context manager for a connection & cursor simultaneously"""
         with sqlite3.connect(self.db_file) as con:
             cur = con.cursor()
