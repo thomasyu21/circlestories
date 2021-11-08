@@ -27,14 +27,14 @@
         </p>
         <form action="/new_story" method="POST">
             <p>
-            {% if no_title % }
+            {% if no_title %}
                 <label style="color: red">A title is required</label><br>
             {% endif %}
             <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70"></textarea>
             </p>
             
             <p>
-            {% if no_content % }
+            {% if no_content %}
                 <label style="color: red">Content is required</label><br>
             {% endif %}
             <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70"></textarea>
