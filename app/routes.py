@@ -142,7 +142,6 @@ def story(story_id):
 
     # View entire story if user has contributed
     if STORY_DB.is_contributor(user_id, story_id):
-        print("HELLO")
         return render_template(
             "view_story.html",
             story_title=story_obj.title,
