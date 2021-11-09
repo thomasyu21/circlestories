@@ -22,8 +22,8 @@
         <h1>Log In</h1>
         <h2>Please enter your username and password below to proceed.</h2>
         <form action="/login", method="POST">
-            <p>Username: <input type="text" name="username"></p>
-            <p>Password: <input type="password" name="password"></p>
+            <p>Username: <input type="text" name="username" required></p>
+            <p>Password: <input type="password" name="password" required></p>
             {% if error %}
             <p style="color:red">{{ error }}</p>
             {% endif %}

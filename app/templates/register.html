@@ -22,10 +22,9 @@
         <h1>Register</h1>
         <h2>Welcome to CircleStories! Complete the following fields to register.</h2>
         <form action="/register", method="POST">
-            <p>Username: <input type="text" name="username"></p>
-            <p>Email: <input type="text" name="email"></p>
-            <p>Password: <input type="password" name="password"></p>
-            <p>Repeat Password: <input type="password" name="password_check"></p>
+            <p>Username: <input type="text" name="username" required></p>
+            <p>Password: <input type="password" name="password" required></p>
+            <p>Repeat Password: <input type="password" name="password_check" required></p>
 
             {% if errors %}
             <ul style="color:red">

@@ -121,3 +121,6 @@ Added an app description to README and to guest landing page
 devenM -- 2021-11-08 13:45
 Added required inputs for new story to ensure title and content are entered. 
 Altered routing for new story to test. 
+
+christopherL -- 2021-11-09 08:06
+Set "required" attribute to other required fields in register and login forms.
