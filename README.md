@@ -17,6 +17,7 @@ The following instructions assume that you have Python 3.9 and pip already insta
 1. Clone this repository.
 ```
 $ git clone https://github.com/Clue88/circlestories.git
+$ cd circlestories
 ```
 
 2. Create a new virtual environment.
@@ -28,12 +29,12 @@ $ source env/bin/activate
 
 3. Install project dependencies.
 ```
-$ (env) pip3 install -r requirements.txt
+(env) $ pip3 install -r requirements.txt
 ```
 
 4. Run the app.
 ```
-$ (env) python3 circlestories.py
+(env) $ python3 circlestories.py
 ```
 
 You can access our web app by going to http://localhost:5000/.
