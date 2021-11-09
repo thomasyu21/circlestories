@@ -128,3 +128,7 @@ Removed email field. Updated launch codes.
 
 yusufE -- 2021-11-09 08:39
 Added a `base.html` template from which all other templates extend.
+
+devenM -- 2021-11-09 14:01
+Added branch to test image upload for stories. Note that delete story method
+and add to existing story method need to be added. 
