@@ -125,3 +125,6 @@ Altered routing for new story to test.
 christopherL -- 2021-11-09 08:06
 Set "required" attribute to other required fields in register and login forms.
 Removed email field. Updated launch codes.
+
+yusufE -- 2021-11-09 08:39
+Added a `base.html` template from which all other templates extend.
