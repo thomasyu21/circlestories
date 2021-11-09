@@ -69,7 +69,7 @@ def create_user(username: str, password: str, password_check: str) -> list:
         if not errors:
             password_hash = hash_password(password)
             c.execute(
-                "INSERT INTO users(username, password) VALUES (?, ?, ?)",
+                "INSERT INTO users(username, password) VALUES (?, ?)",
                 (username, password_hash),
             )
 
