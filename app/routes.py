@@ -80,11 +80,10 @@ def register():
 
     # POST request: handle the form response and redirect
     username = request.form.get("username", default="")
-    email = request.form.get("email", default="")
     password = request.form.get("password", default="")
     password_check = request.form.get("password_check", default="")
 
-    errors = create_user(username, email, password, password_check)
+    errors = create_user(username, password, password_check)
     if errors:
         return render_template("register.html", errors=errors)
 

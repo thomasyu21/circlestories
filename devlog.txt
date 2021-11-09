@@ -124,3 +124,4 @@ Altered routing for new story to test.
 
 christopherL -- 2021-11-09 08:06
 Set "required" attribute to other required fields in register and login forms.
+Removed email field.

@@ -9,7 +9,6 @@ including input validation.
 """
 
 import hashlib
-import re
 import sqlite3
 
 DB_FILE = "circlestories.db"
@@ -21,9 +20,7 @@ def hash_password(password: str) -> str:
     return hashlib.sha512(password.encode()).hexdigest()
 
 
-def validate_registration(
-    username: str, email: str, password: str, password_check: str
-) -> list:
+def validate_registration(username: str, password: str, password_check: str) -> list:
     """Validates input for new user creation."""
 
     with sqlite3.connect(DB_FILE) as db:
@@ -41,24 +38,10 @@ def validate_registration(
         ):
             errors.append("Username already in use")
 
-        if len(email) == 0:
-            errors.append("Email is required")
-        if (
-            c.execute(
-                "SELECT * FROM users WHERE email=:email", {"email": email}
-            ).fetchone()
-            is not None
-        ):
-            errors.append("Email already in use")
-
         if len(password) == 0:
             errors.append("Password is required")
         if len(password_check) == 0:
             errors.append("Repeat password is required")
-
-        # Makes sure email is in the form something@something.something
-        if not re.fullmatch(r"\S+@\S+\.\S+", email):
-            errors.append("A valid email address is required")
 
         if password != password_check:
             errors.append("Passwords must match")
@@ -66,7 +49,7 @@ def validate_registration(
         return errors
 
 
-def create_user(username: str, email: str, password: str, password_check: str) -> list:
+def create_user(username: str, password: str, password_check: str) -> list:
     """Validates inputs and creates a new user if all inputs are valid."""
 
     with sqlite3.connect(DB_FILE) as db:
@@ -77,18 +60,17 @@ def create_user(username: str, email: str, password: str, password_check: str) -
             CREATE TABLE IF NOT EXISTS users(
                 user_id     TEXT PRIMARY KEY DEFAULT (hex(randomblob(8))),
                 username    TEXT,
-                email       TEXT,
                 password    TEXT
             )
         """
         )
 
-        errors = validate_registration(username, email, password, password_check)
+        errors = validate_registration(username, password, password_check)
         if not errors:
             password_hash = hash_password(password)
             c.execute(
-                "INSERT INTO users(username, email, password) VALUES (?, ?, ?)",
-                (username, email, password_hash),
+                "INSERT INTO users(username, password) VALUES (?, ?, ?)",
+                (username, password_hash),
             )
 
         return errors
