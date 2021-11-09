@@ -6,41 +6,30 @@
     Page for Creating a New Story
 -->
 
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}New Story{% endblock %}
 
-<html>
-    <head>
-        <title>New Story</title>
-    </head>
-    <body>
-        <!-- Nav -->
+{% block content %}
+    <h1>Create a New Story</h1>
+    <p>
+        Begin a new story here! Give it a title and write the beginning.
+        Other users will be able to add on with their own ideas!
+    </p>
+    <form action="/new_story" method="POST">
         <p>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+        {% if no_title %}
+            <label style="color: red">A title is required</label><br>
+        {% endif %}
+        <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70" required></textarea>
         </p>
         
-        <!-- Page Content -->
-        <h1>Create a New Story</h1>
         <p>
-            Begin a new story here! Give it a title and write the beginning.
-            Other users will be able to add on with their own ideas!
+        {% if no_content %}
+            <label style="color: red">Content is required</label><br>
+        {% endif %}
+        <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70" required></textarea>
         </p>
-        <form action="/new_story" method="POST">
-            <p>
-            {% if no_title %}
-                <label style="color: red">A title is required</label><br>
-            {% endif %}
-            <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70" required></textarea>
-            </p>
-            
-            <p>
-            {% if no_content %}
-                <label style="color: red">Content is required</label><br>
-            {% endif %}
-            <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70" required></textarea>
-            </p>
 
-            <input type="submit" value="Create new story!">
-        </form>
-    </body>
-</html>
+        <input type="submit" value="Create new story!">
+    </form>
+{% endblock %}

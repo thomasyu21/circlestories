@@ -1,0 +1,31 @@
+<!--
+    CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
+    SoftDev
+    P00: CircleStories
+
+    Base Template
+-->
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{% block title %}TITLE NEEDED{% endblock %} - CircleStories</title>
+    </head>
+    <body>
+        {% block body %}
+            {% block nav %}
+                <!-- Nav -->
+                <p>
+                    <a href="{{ url_for('index') }}">Home</a>
+                    {% if "username" in session %}
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                    {% endif %}
+                </p>
+            {% endblock %}
+            {% block content %}
+                CONTENT NEEDED
+            {% endblock %}
+        {% endblock %}
+    </body>
+</html>

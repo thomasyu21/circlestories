@@ -5,30 +5,18 @@
 
     Page for Adding to an Existing Story
 -->
+{% extends "base.html" %}
+{% block title %}{{ story_title }}{% endblock %}
 
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>{{ story_title }}</title>
-    </head>
-    <body>
-        <!-- Nav -->
+{% block content %}
+    <h2>{{ story_title }}: Add a new scene!</h2>
+    <p>The story so far...</p>
+    <p>{{ last_block }}</p> 
+    <form action="/story/{{ story_id }}" method="POST">
         <p>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <label for="text">Your continuation:</label></br>
+            <textarea name="text" placeholder="Continue the story here..." rows="20" cols="70" required></textarea>
         </p>
-        
-        <!-- Page Content -->
-        <h2>{{ story_title }}: Add a new scene!</h2>
-        <p>The story so far...</p>
-        <p>{{ last_block }}</p> 
-        <form action="/story/{{ story_id }}" method="POST">
-            <p>
-                <label for="text">Your continuation:</label></br>
-                <textarea name="text" placeholder="Continue the story here..." rows="20" cols="70" required></textarea>
-            </p>
-            <input type="submit" value="Add to the story!">
-        </form>
-    </body>
-</html>
+        <input type="submit" value="Add to the story!">
+    </form>
+{% endblock %}
