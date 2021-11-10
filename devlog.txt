@@ -134,4 +134,7 @@ Added branch to test image upload for stories. Note that delete story method
 and add to existing story method need to be added. 
 
 naomiN -- 2021-11-10 08:30
-Added image of team flag 
+Added image of team flag.
+
+christopherL -- 2021-11-10 08:34
+Set team flag as the website favicon.
