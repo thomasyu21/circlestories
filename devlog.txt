@@ -138,3 +138,6 @@ Added image of team flag.
 
 christopherL -- 2021-11-10 08:34
 Set team flag as the website favicon.
+
+devenM -- 2021-11-11 23:28
+Added image functionality and tested in routes, templates, and storydb.  

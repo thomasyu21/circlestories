@@ -2,7 +2,6 @@
     CircleTable -- Christopher Liu, Yusuf Elsharawy, Deven Maheshwari, Naomi Naranjo
     SoftDev
     P00: CircleStories
-
     Page for Viewing an Existing Story
 -->
 
@@ -14,6 +13,9 @@
     {% if story_blocks %}
     {% for block_text in story_blocks %}
     <p>{{ block_text }}</p>
+    {% endfor %}
+    {% for block_img in story_images %}
+    <img src="{{ block_img }}" alt="">
     {% endfor %}
     {% endif %}
 {% endblock %}

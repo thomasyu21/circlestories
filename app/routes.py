@@ -114,10 +114,11 @@ def new_story():
     # POST request: handle the form response and redirect
     created_story_title = request.form.get("title", default="")
     created_story_content = request.form.get("text", default="")
+    created_story_image = request.form.get("image", default="")
     user_id = get_user_id(session["username"])
 
     story_id = STORY_DB.add_story(user_id, created_story_title)
-    STORY_DB.get_story(story_id).add_block(user_id, created_story_content)
+    STORY_DB.get_story(story_id).add_block(user_id, created_story_content, created_story_image)
 
     return redirect(url_for("story", story_id=story_id))
 
@@ -146,6 +147,7 @@ def story(story_id):
             "view_story.html",
             story_title=story_obj.title,
             story_blocks=story_obj.get_blocks(),
+            story_images=story_obj.get_blocks_images(),
         )
 
     # If user has not contributed, show append form
@@ -160,5 +162,6 @@ def story(story_id):
 
     # Handle story append response
     new_block_text = request.form.get("text", default="")
-    story_obj.add_block(user_id, new_block_text)
+    new_block_img = request.form.get("image", default="")
+    story_obj.add_block(user_id, new_block_text, new_block_img)
     return redirect(url_for("story", story_id=story_id))

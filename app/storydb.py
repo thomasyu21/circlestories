@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS blocks (
     story_id            INTEGER,
     author_id           INTEGER,
     position            INTEGER,
-    block_text          TEXT
+    block_text          TEXT,
+    block_img           TEXT
 );
 """
 
@@ -76,17 +77,30 @@ class StoryDB:
                 cur.execute(
                     "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
                     (self.story_id,),
+                    "SELECT block_img FROM blocks WHERE story_id=? ORDER BY position",
+                    (self.story_id,),
+                )
+                return [block[0] for block in cur.fetchall()]
+        
+        def get_blocks_images(self):
+            """Retrieves the concatenated text of all blocks with this
+            story_id, in order."""
+
+            with self.db_obj.connect() as cur:
+                cur.execute(
+                    "SELECT block_img FROM blocks WHERE story_id=? ORDER BY position",
+                    (self.story_id,),
                 )
                 return [block[0] for block in cur.fetchall()]
 
-        def add_block(self, author_id, block_text):
+        def add_block(self, author_id, block_text, block_img):
             """Adds a new block to this Story with the provided author_id and
             block_text."""
             with self.db_obj.connect() as cur:
                 cur.execute(
-                    """INSERT INTO blocks(story_id, author_id, position, block_text)
-                    VALUES (?, ?, ?, ?)""",
-                    (self.story_id, author_id, self.num_blocks, block_text),
+                    """INSERT INTO blocks(story_id, author_id, position, block_text, block_img)
+                    VALUES (?, ?, ?, ?, ?)""",
+                    (self.story_id, author_id, self.num_blocks, block_text, block_img),
                 )
                 self.num_blocks += 1
                 cur.execute(
