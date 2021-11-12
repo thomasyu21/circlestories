@@ -141,3 +141,7 @@ Set team flag as the website favicon.
 
 devenM -- 2021-11-11 23:28
 Added image functionality and tested in routes, templates, and storydb.  
+
+christopherL -- 2021-11-12 00:31
+Fixed image ordering issue and completed final code cleanup. Checked to ensure
+project is in compliance with project guildelines.

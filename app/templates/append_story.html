@@ -11,8 +11,10 @@
 {% block content %}
     <h2>{{ story_title }}: Add a new scene!</h2>
     <p>The story so far...</p>
-    <p>{{ last_block }}</p> 
-    <img src="{{ last_block_image }}" alt="">
+    <p>{{ last_block[0] }}</p>
+    {% if last_block[1] %}
+    <img src="{{ last_block[1] }}" style="max-height:300px">
+    {% endif %}
     <form action="/story/{{ story_id }}" method="POST">
         <p>
             <label for="text">Your continuation:</label></br>
@@ -20,7 +22,7 @@
         </p>
 
         <p>
-            <textarea name="image" placeholder="Image Link..." rows="1" cols="70"></textarea>
+            <textarea name="image" placeholder="Optionally, add an image link here..." rows="1" cols="70"></textarea>
         </p>
         <input type="submit" value="Add to the story!">
     </form>

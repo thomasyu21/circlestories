@@ -70,26 +70,15 @@ class StoryDB:
             return factory
 
         def get_blocks(self):
-            """Retrieves the concatenated text of all blocks with this
-            story_id, in order."""
+            """Retrieves the concatenated text and images of all blocks with
+            this story_id, in order."""
 
             with self.db_obj.connect() as cur:
                 cur.execute(
-                    "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
+                    "SELECT block_text, block_img FROM blocks WHERE story_id=? ORDER BY position",
                     (self.story_id,),
                 )
-                return [block[0] for block in cur.fetchall()]
-        
-        def get_blocks_images(self):
-            """Retrieves the concatenated images of all blocks with this
-            story_id, in order."""
-
-            with self.db_obj.connect() as cur:
-                cur.execute(
-                    "SELECT block_img FROM blocks WHERE story_id=? ORDER BY position",
-                    (self.story_id,),
-                )
-                return [block[0] for block in cur.fetchall()]
+                return [(block[0], block[1]) for block in cur.fetchall()]
 
         def add_block(self, author_id, block_text, block_img):
             """Adds a new block to this Story with the provided author_id and
@@ -116,19 +105,12 @@ class StoryDB:
             """Returns the text of the last block"""
             with self.db_obj.connect() as cur:
                 cur.execute(
-                    "SELECT block_text FROM blocks WHERE story_id=? AND position=? LIMIT 1",
+                    """SELECT block_text, block_img FROM blocks
+                    WHERE story_id=? AND position=? LIMIT 1""",
                     (self.story_id, self.num_blocks - 1),
                 )
-                return cur.fetchone()[0]
-        
-        def last_block_image(self):
-            """Returns the image of the last block"""
-            with self.db_obj.connect() as cur:
-                cur.execute(
-                    "SELECT block_img FROM blocks WHERE story_id=? AND position=? LIMIT 1",
-                    (self.story_id, self.num_blocks - 1),
-                )
-                return cur.fetchone()[0]
+                last_block = cur.fetchone()
+                return (last_block[0], last_block[1])
 
         def update(self):
             """Requests data from the database to update this object"""
@@ -208,7 +190,8 @@ class StoryDB:
         """Returns list of story ids created by this user."""
         with self.connect() as cur:
             cur.execute(
-                "SELECT story_id FROM stories WHERE user_id=? ORDER BY creation_timestamp",
+                """SELECT story_id FROM stories WHERE user_id=?
+                ORDER BY creation_timestamp""",
                 (user_id,),
             )
             return [s[0] for s in cur.fetchall()]

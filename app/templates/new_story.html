@@ -17,21 +17,15 @@
     </p>
     <form action="/new_story" method="POST">
         <p>
-        {% if no_title %}
-            <label style="color: red">A title is required</label><br>
-        {% endif %}
         <textarea name="title" placeholder="Poignant story title here..." rows="1" cols="70" required></textarea>
         </p>
         
         <p>
-        {% if no_content %}
-            <label style="color: red">Content is required</label><br>
-        {% endif %}
         <textarea name="text" placeholder="It was a dark and stormy night..." rows="20" cols="70" required></textarea>
         </p>
 
         <p>
-        <textarea name="image" placeholder="Image Link..." rows="1" cols="70"></textarea>
+        <textarea name="image" placeholder="Optionally, add an image link here..." rows="1" cols="70"></textarea>
         </p>
 
         <input type="submit" value="Create new story!">

@@ -118,7 +118,9 @@ def new_story():
     user_id = get_user_id(session["username"])
 
     story_id = STORY_DB.add_story(user_id, created_story_title)
-    STORY_DB.get_story(story_id).add_block(user_id, created_story_content, created_story_image)
+    STORY_DB.get_story(story_id).add_block(
+        user_id, created_story_content, created_story_image
+    )
 
     return redirect(url_for("story", story_id=story_id))
 
@@ -147,19 +149,16 @@ def story(story_id):
             "view_story.html",
             story_title=story_obj.title,
             story_blocks=story_obj.get_blocks(),
-            story_images=story_obj.get_blocks_images(),
         )
 
     # If user has not contributed, show append form
     if request.method == "GET":
         last_block = story_obj.last_block()
-        last_block_image = story_obj.last_block_image()
         return render_template(
             "append_story.html",
             story_id=story_id,
             story_title=story_obj.title,
             last_block=last_block,
-            last_block_image=last_block_image
         )
 
     # Handle story append response
