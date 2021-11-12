@@ -11,11 +11,14 @@
 {% block content %}
     <h1>{{ story_title }}</h1>
     {% if story_blocks %}
-        {% for block in story_blocks %}
-        <p>{{ block[0] }}</p>
-        {% if block[1] %}
-        <img src="{{ block[1] }}" style="max-height:300px">
-        {% endif %}
+        {% for contributor, (block_text, block_image) in story_blocks %}
+            <p>
+                <b>[{{ contributor|default("Unknown Contributor") }}]</b>
+                {{ block_text }}
+            </p>
+            {% if block_image %}
+            <img src="{{ block_image }}" style="max-height:300px">
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endblock %}

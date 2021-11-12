@@ -10,12 +10,23 @@ Handles all of the Flask app routes for CircleStories.
 from flask import render_template, redirect, request, url_for, session
 
 from app import app
-from app.auth import authenticate_user, create_user, get_user_id
+from app.auth import authenticate_user, create_user, get_user_id, get_username
 from app.storydb import StoryDB
 
 DB_FILE = "circlestories.db"
 
 STORY_DB = StoryDB(DB_FILE)
+
+
+def get_stories_info(story_ids):
+    """Takes a list of story id's and returns a list of tuples of:
+    (story_id, creator_username, story_title). This is useful
+    for Jinja to list out stories."""
+    result = []
+    for story_id in story_ids:
+        story_obj = STORY_DB.get_story(story_id)
+        result.append((story_id, get_username(story_obj.creator_id), story_obj.title))
+    return result
 
 
 @app.route("/")
@@ -24,17 +35,14 @@ def index():
     """CircleStories homepage."""
     if "username" in session:
         user_id = get_user_id(session["username"])
-        contributed_stories = STORY_DB.get_contributed_stories(user_id)
-        contributed_stories = [
-            (story_id, STORY_DB.get_story(story_id).title)
-            for story_id in contributed_stories
-        ]
 
-        not_contributed_stories = STORY_DB.get_not_contributed_stories(user_id)
-        not_contributed_stories = [
-            (story_id, STORY_DB.get_story(story_id).title)
-            for story_id in not_contributed_stories
-        ]
+        contributed_stories = get_stories_info(
+            STORY_DB.get_contributed_stories(user_id)
+        )
+
+        not_contributed_stories = get_stories_info(
+            STORY_DB.get_not_contributed_stories(user_id)
+        )
 
         return render_template(
             "homepage.html",
@@ -145,10 +153,11 @@ def story(story_id):
 
     # View entire story if user has contributed
     if STORY_DB.is_contributor(user_id, story_id):
+        contributors = list(map(get_username, story_obj.get_contributors()))
         return render_template(
             "view_story.html",
             story_title=story_obj.title,
-            story_blocks=story_obj.get_blocks(),
+            story_blocks=zip(contributors, story_obj.get_blocks()),
         )
 
     # If user has not contributed, show append form

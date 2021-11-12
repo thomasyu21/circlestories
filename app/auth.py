@@ -111,3 +111,19 @@ def get_user_id(username: str) -> str:
         if user_id is not None:
             return user_id[0]
         return None
+
+
+def get_username(user_id: str) -> str:
+    """Returns the username associated with the given user_id, None if user
+    doesn't exist."""
+
+    with sqlite3.connect(DB_FILE) as db:
+        c = db.cursor()
+
+        username = c.execute(
+            "SELECT username FROM users WHERE user_id=:user_id", {"user_id": user_id}
+        ).fetchone()
+
+        if username is not None:
+            return username[0]
+        return None

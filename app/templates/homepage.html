@@ -19,8 +19,11 @@
     <h2>Contribute to an Existing Story!</h2>
     {% if not_contributed_stories %}
     <ul>
-        {% for story in not_contributed_stories %}
-        <li><a href="{{ url_for('story', story_id=story[0]) }}">{{ story[1] }}</a></li>
+        {% for story_id, story_creator, story_title in not_contributed_stories %}
+        <li>
+            <a href="{{ url_for('story', story_id=story_id) }}">{{ story_title }}</a>
+            by <b>{{ story_creator|default("Unknown User") }}</b>
+        </li>
         {% endfor %}
     </ul>
     {% else %}
@@ -32,8 +35,11 @@
     <h2>View Stories You've Contributed To</h2>
     {% if contributed_stories %}
     <ul>
-        {% for story in contributed_stories %}
-        <li><a href="{{ url_for('story', story_id=story[0]) }}">{{ story[1] }}</a></li>
+        {% for story_id, story_creator, story_title in contributed_stories %}
+        <li>
+            <a href="{{ url_for('story', story_id=story_id) }}">{{ story_title }}</a>
+            by <b>{{ story_creator|default("Unknown User") }}</b>
+        </li>
         {% endfor %}
     </ul>
     {% else %}

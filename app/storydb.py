@@ -69,8 +69,19 @@ class StoryDB:
 
             return factory
 
+        def get_contributors(self):
+            """Retrieves the list of user_id's of all users that contributed
+            to this story, in order."""
+
+            with self.db_obj.connect() as cur:
+                cur.execute(
+                    "SELECT author_id FROM blocks WHERE story_id=? ORDER BY position",
+                    (self.story_id,),
+                )
+                return [block[0] for block in cur.fetchall()]
+
         def get_blocks(self):
-            """Retrieves the concatenated text and images of all blocks with
+            """Retrieves the list of text and images of all blocks with
             this story_id, in order."""
 
             with self.db_obj.connect() as cur:
@@ -78,7 +89,7 @@ class StoryDB:
                     "SELECT block_text, block_img FROM blocks WHERE story_id=? ORDER BY position",
                     (self.story_id,),
                 )
-                return [(block[0], block[1]) for block in cur.fetchall()]
+                return cur.fetchall()
 
         def add_block(self, author_id, block_text, block_img):
             """Adds a new block to this Story with the provided author_id and
