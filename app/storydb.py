@@ -77,8 +77,6 @@ class StoryDB:
                 cur.execute(
                     "SELECT block_text FROM blocks WHERE story_id=? ORDER BY position",
                     (self.story_id,),
-                    "SELECT block_img FROM blocks WHERE story_id=? ORDER BY position",
-                    (self.story_id,),
                 )
                 return [block[0] for block in cur.fetchall()]
         
