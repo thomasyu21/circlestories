@@ -153,11 +153,13 @@ def story(story_id):
     # If user has not contributed, show append form
     if request.method == "GET":
         last_block = story_obj.last_block()
+        last_block_image = story_obj.last_block_image()
         return render_template(
             "append_story.html",
             story_id=story_id,
             story_title=story_obj.title,
             last_block=last_block,
+            last_block_image=last_block_image
         )
 
     # Handle story append response

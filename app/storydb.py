@@ -81,7 +81,7 @@ class StoryDB:
                 return [block[0] for block in cur.fetchall()]
         
         def get_blocks_images(self):
-            """Retrieves the concatenated text of all blocks with this
+            """Retrieves the concatenated images of all blocks with this
             story_id, in order."""
 
             with self.db_obj.connect() as cur:
@@ -117,6 +117,15 @@ class StoryDB:
             with self.db_obj.connect() as cur:
                 cur.execute(
                     "SELECT block_text FROM blocks WHERE story_id=? AND position=? LIMIT 1",
+                    (self.story_id, self.num_blocks - 1),
+                )
+                return cur.fetchone()[0]
+        
+        def last_block_image(self):
+            """Returns the image of the last block"""
+            with self.db_obj.connect() as cur:
+                cur.execute(
+                    "SELECT block_img FROM blocks WHERE story_id=? AND position=? LIMIT 1",
                     (self.story_id, self.num_blocks - 1),
                 )
                 return cur.fetchone()[0]

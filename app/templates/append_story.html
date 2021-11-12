@@ -12,6 +12,7 @@
     <h2>{{ story_title }}: Add a new scene!</h2>
     <p>The story so far...</p>
     <p>{{ last_block }}</p> 
+    <img src="{{ last_block_image }}" alt="">
     <form action="/story/{{ story_id }}" method="POST">
         <p>
             <label for="text">Your continuation:</label></br>
