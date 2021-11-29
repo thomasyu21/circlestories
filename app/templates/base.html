@@ -4,6 +4,12 @@
     P00: CircleStories
 
     Base Template
+
+    Editors
+    Team dinoClock: Yaying Liang Li, Thomas Yu
+    SoftDev
+    K20 -- Throw Some Forking STUYLE On It
+    2021-11-28
 -->
 
 <!DOCTYPE html>
@@ -12,17 +18,20 @@
     <head>
         <title>{% block title %}TITLE NEEDED{% endblock %} - CircleStories</title>
         <link rel="icon" href="/static/favicon.ico" type="image/x-icon"/>
+        <link rel='stylesheet' type='text/css' href='static/style.css'>
     </head>
     <body>
         {% block body %}
             {% block nav %}
                 <!-- Nav -->
+                <div class='nav'>
                 <p>
                     <a href="{{ url_for('index') }}">Home</a>
                     {% if "username" in session %}
                     <a href="{{ url_for('logout') }}">Logout</a>
                     {% endif %}
                 </p>
+                </div>
             {% endblock %}
             {% block content %}
                 CONTENT NEEDED
