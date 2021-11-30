@@ -4,12 +4,19 @@
     P00: CircleStories
 
     Login Page
+
+    Editors
+    Team dinoClock: Yaying Liang Li, Thomas Yu
+    SoftDev
+    K20 -- Throw Some Forking STUYLE On It
+    2021-11-28
 -->
 
 {% extends "base.html" %}
 {% block title %}Log In{% endblock %}
 
 {% block content %}
+  <div class="box">
     <h1>Log In</h1>
     <h2>Please enter your username and password below to proceed.</h2>
     <form action="/login", method="POST">
@@ -22,4 +29,5 @@
     </form>
 
     <p>New user? <a href="{{ url_for('register') }}">Register</a> here.</p>
+  </div>
 {% endblock %}

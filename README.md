@@ -41,3 +41,10 @@ You can access our web app by going to http://localhost:5000/.
 
 ## Edits
 Team dinoClock: Yaying Liang Li, Thomas Yu
+
+Color Scheme:
+99D5C9
+6C969D
+645E9D
+392B58
+2D0320

@@ -4,12 +4,19 @@
     P00: CircleStories
 
     Registration Page
+
+    Editors
+    Team dinoClock: Yaying Liang Li, Thomas Yu
+    SoftDev
+    K20 -- Throw Some Forking STUYLE On It
+    2021-11-28
 -->
 
 {% extends "base.html" %}
 {% block title %}Register{% endblock %}
 
 {% block content %}
+  <div class="box">
     <h1>Register</h1>
     <h2>Welcome to CircleStories! Complete the following fields to register.</h2>
     <form action="/register", method="POST">
@@ -29,4 +36,5 @@
     </form>
 
     <p>Already registered? <a href="{{ url_for('login') }}">Log in</a> here.</p>
+  </div>
 {% endblock %}
