@@ -54,3 +54,4 @@ Color Scheme: <br>
 2. A colorful navbar! Catch those eyes!
 3. Different colored box for the login/register page! Separate the login/register and the background!
 4. Centered them words!
+5. Added colorful picture frame around pictures!

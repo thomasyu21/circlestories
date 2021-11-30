@@ -43,6 +43,13 @@
     padding-top:0;
   }
 
+  .picbox{
+    background: #392B58;
+    padding: 20px;
+    position: relative;
+    left: 20%;
+  }
+
 </style>
 
 {% extends "base.html" %}
@@ -58,9 +65,13 @@
                 <br>
                 {{ block_text }}
             </p>
+
             {% if block_image %}
-            <img src="{{ block_image }}" style="max-height:300px">
+              <div class="picbox">
+                <img src="{{ block_image }}" style="max-height:300px">
+              </div>
             {% endif %}
+
         </div>
         {% endfor %}
     {% endif %}
