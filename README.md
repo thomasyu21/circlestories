@@ -48,3 +48,9 @@ Color Scheme: <br>
 645E9D <br>
 392B58 <br>
 2D0320 <br>
+
+#What did we add?
+1. Some forking color! Bye black and white background!
+2. A colorful navbar! Catch those eyes!
+3. Different colored box for the login/register page! Separate the login/register and the background!
+4. Centered them words!
